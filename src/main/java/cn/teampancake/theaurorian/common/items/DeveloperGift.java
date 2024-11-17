@@ -16,18 +16,18 @@ import java.util.List;
 
 public class DeveloperGift extends Item {
 
+    @Nullable
+    private static List<Item> developerItems = null;
+
     public DeveloperGift() {
         super(TAItemProperties.get().fireResistant().addItemTag(TAItemTags.IS_LEGENDARY).isSimpleModelItem());
     }
-
-    @Nullable
-    private static List<Item> developerItems = null;
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (developerItems == null) developerItems = getDeveloperItems();
         ItemStack stack = player.getItemInHand(usedHand);
-        stack.shrink(player.getAbilities().instabuild ? 0 : 1);
+        stack.consume(1, player);
         int index = level.random.nextInt(developerItems.size());
         player.addItem(developerItems.get(index).getDefaultInstance());
         return InteractionResultHolder.consume(stack);

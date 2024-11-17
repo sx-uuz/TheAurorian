@@ -10,7 +10,6 @@ public class TADamageTypes {
 
     public static final ResourceKey<DamageType> CORRUPTION = createKey("corruption");
 
-    @SuppressWarnings("SameParameterValue")
     private static ResourceKey<DamageType> createKey(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, TheAurorian.prefix(name));
     }
