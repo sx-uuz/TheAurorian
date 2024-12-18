@@ -1,8 +1,11 @@
 package cn.teampancake.theaurorian.common.items;
 
+import cn.teampancake.theaurorian.common.data.datagen.tags.TAItemTags;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,12 +17,18 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-public class StrangeMeat extends Item implements ITooltipsItem {
+import java.util.List;
+
+public class StrangeMeat extends Item {
+
+    private static final List<Holder<MobEffect>> EFFECT_LIST = List.of(
+            MobEffects.FIRE_RESISTANCE, MobEffects.DAMAGE_BOOST, MobEffects.ABSORPTION, MobEffects.REGENERATION,
+            MobEffects.DAMAGE_RESISTANCE, MobEffects.DIG_SPEED, MobEffects.MOVEMENT_SPEED);
 
     public StrangeMeat() {
-        super(new Properties().rarity(Rarity.EPIC).durability(10)
-                .food(new FoodProperties.Builder().nutrition(8)
-                        .saturationModifier((0.9F)).alwaysEdible().build()));
+        super(TAItemProperties.get().rarity(Rarity.EPIC).durability(10)
+                .food(new FoodProperties.Builder().nutrition(8).saturationModifier((0.9F)).alwaysEdible()
+                        .build()).addItemTag(TAItemTags.IS_RARE).hasTooltips().isSimpleModelItem());
     }
 
     @Override
@@ -34,16 +43,8 @@ public class StrangeMeat extends Item implements ITooltipsItem {
             stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
             player.eat(level, stack, foodProperties);
             if (stack.getDamageValue() == stack.getMaxDamage()) {
-                int select = level.random.nextInt(7);
-                switch (select) {
-                    case 0 -> player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2400));
-                    case 1 -> player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2400));
-                    case 2 -> player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400));
-                    case 3 -> player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2400));
-                    case 4 -> player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2400));
-                    case 5 -> player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2400));
-                    case 6 -> player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400));
-                }
+                int select = level.random.nextInt(EFFECT_LIST.size());
+                player.addEffect(new MobEffectInstance(EFFECT_LIST.get(select), 2400));
             }
         }
 

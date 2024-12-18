@@ -8,7 +8,8 @@ import cn.teampancake.theaurorian.common.items.TAArmorMaterials;
 import cn.teampancake.theaurorian.common.level.biome.TABiomeSource;
 import cn.teampancake.theaurorian.common.level.chunk.TAChunkGenerator;
 import cn.teampancake.theaurorian.common.registry.*;
-import cn.teampancake.theaurorian.compat.ThirstWasTakenCompat;
+import cn.teampancake.theaurorian.compat.mui.ModernUICompat;
+import cn.teampancake.theaurorian.compat.thirst.ThirstWasTakenCompat;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -64,7 +65,6 @@ public class TheAurorian {
         TAStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modEventBus);
         TAEnchantmentEffectTypes.ENCHANTMENT_ENTITY_EFFECT_TYPES.register(modEventBus);
         TALootItemConditions.LOOT_CONDITION_TYPES.register(modEventBus);
-        TAVillagerTypes.VILLAGER_TYPES.register(modEventBus);
         TABiomeLayers.BIOME_LAYER_TYPES.register(modEventBus);
         TAMobEffects.MOB_EFFECTS.register(modEventBus);
         TAVillagerProfession.register(modEventBus);
@@ -74,6 +74,10 @@ public class TheAurorian {
         TAGameRules.register();
         if (ModList.get().isLoaded("thirst")) {
             ThirstWasTakenCompat.init();
+        }
+
+        if (ModList.get().isLoaded("modernui")){
+            ModernUICompat.LOADED = true;
         }
 
         if (FMLEnvironment.dist.isClient()) {

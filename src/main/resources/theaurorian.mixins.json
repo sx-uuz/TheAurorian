@@ -5,19 +5,13 @@
     "compatibilityLevel": "JAVA_21",
     "refmap": "theaurorian.refmap.json",
     "mixins": [
-        "MixinDamageSource",
-        "MixinEmeraldsForVillagerTypeItem",
         "MixinFoodData",
-        "MixinLevel",
-        "MixinLivingEntity",
-        "MixinPlayer",
-        "MixinServerLevel",
-        "MixinTemptGoal"
+        "MixinItem",
+        "MixinItemStack",
+        "MixinPlayer"
     ],
     "client": [
-        "MixinClientLevel",
         "MixinClientPacketListener",
-        "MixinLevelRenderer",
         "MixinMinecraft"
     ],
     "injectors": {

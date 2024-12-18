@@ -46,8 +46,10 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("death.attack.corruption_3", "%1$s died under the cherry blossom tree", "%1$s死在了樱花树下");
         this.add("itemGroup." + TheAurorian.MOD_ID + ".normal", "The Aurorian", "极光幽境");
         this.add("itemGroup." + TheAurorian.MOD_ID + ".building", "The Aurorian (Building Materials)", "极光幽境（建材）");
-        this.add("theaurorian.container.moonlight_forge", "Moonlight Forge", "月光融锻台");
-        this.add("theaurorian.container.aurorian_furnace", "Aurorian Furnace", "极光熔炉");
+        this.add(TheAurorian.MOD_ID + ".container.aurorian_furnace", "Aurorian Furnace", "极光熔炉");
+        this.add(TheAurorian.MOD_ID + ".container.moonlight_forge", "Moonlight Forge", "月光融锻台");
+        this.add(TheAurorian.MOD_ID + ".container.alchemy_table", "Alchemy Table", "炼药桌");
+        this.add(TheAurorian.MOD_ID + ".container.scrapper", "Scrapper", "粉碎器");
         this.add("gamerule.enableAurorianBless", "Enable Aurorian Bless", "启用极光赐福");
         this.add("gamerule.enableAurorianBless.description",
                 "Controls whether players can obtain beneficial effects from the Aurorian Night.",
@@ -761,7 +763,6 @@ public class TALanguageProvider extends LanguageProvider {
         this.addEffect(TAMobEffects.CRESCENT, "Crescent", "新月");
         this.addEffect(TAMobEffects.HOLINESS, "Holiness", "圣洁");
         this.addEffect(TAMobEffects.PRESSURE, "Pressure", "威压");
-        this.addEffect(TAMobEffects.DEAFNESS, "Deafness", "失聪");
         this.addEffect(TAMobEffects.PARALYSIS, "Paralysis", "瘫痪");
         this.addEffect(TAMobEffects.CONFUSION, "Confusion", "混乱");
         this.addEffect(TAMobEffects.FROSTBITE, "Frostbite", "冻伤");
@@ -772,7 +773,6 @@ public class TALanguageProvider extends LanguageProvider {
         this.addEffect(TAMobEffects.MOON_BEFALL, "Befall of Moon", "月临");
         this.addEffect(TAMobEffects.BLESS_OF_MOON, "Bless of Moon", "护月");
         this.addEffect(TAMobEffects.VULNERABILITY, "Vulnerability", "脆化");
-        this.addEffect(TAMobEffects.SHADOWED_SIGHT, "Shadowed Sight", "匿影");
         this.addEffect(TAMobEffects.EIDOLON_POISON, "Eidolon Poison", "幻光毒");
         this.addEffect(TAMobEffects.CRYSTALLIZATION, "Crystallization", "晶化");
         this.addEffect(TAMobEffects.FORBIDDEN_CURSE, "Forbidden Curse", "禁咒");
@@ -1025,7 +1025,7 @@ public class TALanguageProvider extends LanguageProvider {
     }
 
     private void addPainting(ResourceKey<PaintingVariant> key, String en, String cn) {
-        this.add("painting." + TheAurorian.MOD_ID + "." + key, en, cn);
+        this.add("painting." + key.location().toLanguageKey(), en, cn);
     }
 
     private void add(String key, String en, String cn) {

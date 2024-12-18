@@ -82,8 +82,11 @@ public class TAEntityTypes {
             () -> EntityType.Builder.<UnstableCrystal>of(UnstableCrystal::new, MobCategory.MISC).sized(0.25F, 0.25F)
                     .clientTrackingRange((4)).updateInterval((10)).fireImmune().build("unstable_crystal"));
     public static final DeferredHolder<EntityType<?>, EntityType<BladeWave>> BLADE_WAVE = ENTITY_TYPES.register("blade_wave",
-            () -> EntityType.Builder.of(BladeWave::new, MobCategory.MISC).sized(0.5F, 0.5F)
+            () -> EntityType.Builder.<BladeWave>of(BladeWave::new, MobCategory.MISC).sized(5.5F, 1.5F)
                     .clientTrackingRange((4)).updateInterval((10)).fireImmune().build("blade_wave"));
+    public static final DeferredHolder<EntityType<?>, EntityType<MoonQueenSword>> MOON_QUEEN_SWORD = ENTITY_TYPES.register("moon_queen_sword",
+            () -> EntityType.Builder.<MoonQueenSword>of(MoonQueenSword::new, MobCategory.MISC).sized(1.0F, 1.0F)
+                    .clientTrackingRange((4)).updateInterval((10)).fireImmune().build("moon_queen_sword"));
     //NPC
     public static final DeferredHolder<EntityType<?>, EntityType<AurorianVillager>> AURORIAN_VILLAGER = ENTITY_TYPES.register("aurorian_villager",
             () -> EntityType.Builder.of(AurorianVillager::new, MobCategory.CREATURE).sized(0.6F, 1.85F)
@@ -199,6 +202,7 @@ public class TAEntityTypes {
         event.registerEntityRenderer(WEBBING.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(SIT.get(), SitRenderer::new);
         event.registerEntityRenderer(LUNA_CIRCLE.get(), LunaCircleRenderer::new);
+        event.registerEntityRenderer(MOON_QUEEN_SWORD.get(), MoonQueenSwordRenderer::new);
         event.registerEntityRenderer(FALLING_FIREBALL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(THROWN_AXE.get(), ThrownAxeRenderer::new);
         event.registerEntityRenderer(THROWN_SHURIKEN.get(), ThrownShurikenRenderer::new);
@@ -284,33 +288,34 @@ public class TAEntityTypes {
         event.registerLayerDefinition(TAModelLayers.SPECTRAL_ARMOR, SpectralArmorModel::createBodyLayer);
         event.registerLayerDefinition(TAModelLayers.MYSTERIUM_ARMOR, MysteriumWoolArmorModel::createBodyLayer);
         event.registerLayerDefinition(TAModelLayers.CRYSTAL_RUNE_ARMOR, CrystalRuneArmorModel::createBodyLayer);
+        event.registerLayerDefinition(TAModelLayers.MOON_QUEEN_SWORD, MoonQueenSwordModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        regsiterNormalSpawn(event, BREAD_BEAST.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, ICEFIELD_DEER.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, BLUE_TAIL_WOLF.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, MOON_FISH.get(), SpawnPlacementTypes.IN_WATER, TASpawnRules::checkWaterAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_WINGED_FISH.get(), SpawnPlacementTypes.IN_WATER, TASpawnRules::checkWaterAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_RABBIT.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_SHEEP.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_PIG.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_COW.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
-        regsiterNormalSpawn(event, AURORIAN_SLIME.get(), SpawnPlacementTypes.ON_GROUND, AurorianSlime::checkSpawnRules);
-        regsiterNormalSpawn(event, DISTURBED_HOLLOW.get(), SpawnPlacementTypes.ON_GROUND, Monster::checkMonsterSpawnRules);
-        regsiterNormalSpawn(event, UNDEAD_KNIGHT.get(), SpawnPlacementTypes.ON_GROUND, UndeadKnight::checkSpawnRules);
-        regsiterNormalSpawn(event, SPIRIT.get(), SpawnPlacementTypes.ON_GROUND, Spirit::checkSpawnRules);
-        regsiterNormalSpawn(event, MOON_ACOLYTE.get(), SpawnPlacementTypes.ON_GROUND, MoonAcolyte::checkSpawnRules);
-        regsiterNormalSpawn(event, SPIDERLING.get(), SpawnPlacementTypes.ON_GROUND, Spiderling::checkSpawnRules);
-        regsiterNormalSpawn(event, CRYSTALLINE_SPRITE.get(), SpawnPlacementTypes.ON_GROUND, CrystallineSprite::checkSpawnRules);
-        regsiterNormalSpawn(event, CAVE_DWELLER.get(), SpawnPlacementTypes.ON_GROUND, CaveDweller::checkMonsterSpawnRules);
-        regsiterNormalSpawn(event, ROCK_HAMMER.get(), SpawnPlacementTypes.ON_GROUND, RockHammer::checkSpawnRules);
-        regsiterNormalSpawn(event, TONG_SCORPION.get(), SpawnPlacementTypes.ON_GROUND, TongScorpion::checkSpawnRules);
-        regsiterNormalSpawn(event, SNOW_TUNDRA_GIANT_CRAB.get(), SpawnPlacementTypes.ON_GROUND, SnowTundraGiantCrab::checkSpawnRules);
-        regsiterNormalSpawn(event, FLOWER_LEECH.get(), SpawnPlacementTypes.IN_WATER, FlowerLeech::checkSpawnRules);
-        regsiterNormalSpawn(event, FORGOTTEN_MAGIC_BOOK.get(), SpawnPlacementTypes.ON_GROUND, ForgottenMagicBook::checkSpawnRules);
-        regsiterNormalSpawn(event, HYPHA_WALKING_MUSHROOM.get(), SpawnPlacementTypes.ON_GROUND, HyphaWalkingMushroom::checkSpawnRules);
+        registerNormalSpawn(event, BREAD_BEAST.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, ICEFIELD_DEER.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, BLUE_TAIL_WOLF.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, MOON_FISH.get(), SpawnPlacementTypes.IN_WATER, TASpawnRules::checkWaterAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_WINGED_FISH.get(), SpawnPlacementTypes.IN_WATER, TASpawnRules::checkWaterAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_RABBIT.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_SHEEP.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_PIG.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_COW.get(), SpawnPlacementTypes.ON_GROUND, TASpawnRules::checkAnimalSpawnRules);
+        registerNormalSpawn(event, AURORIAN_SLIME.get(), SpawnPlacementTypes.ON_GROUND, AurorianSlime::checkSpawnRules);
+        registerNormalSpawn(event, DISTURBED_HOLLOW.get(), SpawnPlacementTypes.ON_GROUND, Monster::checkMonsterSpawnRules);
+        registerNormalSpawn(event, UNDEAD_KNIGHT.get(), SpawnPlacementTypes.ON_GROUND, UndeadKnight::checkSpawnRules);
+        registerNormalSpawn(event, SPIRIT.get(), SpawnPlacementTypes.ON_GROUND, Spirit::checkSpawnRules);
+        registerNormalSpawn(event, MOON_ACOLYTE.get(), SpawnPlacementTypes.ON_GROUND, MoonAcolyte::checkSpawnRules);
+        registerNormalSpawn(event, SPIDERLING.get(), SpawnPlacementTypes.ON_GROUND, Spiderling::checkSpawnRules);
+        registerNormalSpawn(event, CRYSTALLINE_SPRITE.get(), SpawnPlacementTypes.ON_GROUND, CrystallineSprite::checkSpawnRules);
+        registerNormalSpawn(event, CAVE_DWELLER.get(), SpawnPlacementTypes.ON_GROUND, CaveDweller::checkMonsterSpawnRules);
+        registerNormalSpawn(event, ROCK_HAMMER.get(), SpawnPlacementTypes.ON_GROUND, RockHammer::checkSpawnRules);
+        registerNormalSpawn(event, TONG_SCORPION.get(), SpawnPlacementTypes.ON_GROUND, TongScorpion::checkSpawnRules);
+        registerNormalSpawn(event, SNOW_TUNDRA_GIANT_CRAB.get(), SpawnPlacementTypes.ON_GROUND, SnowTundraGiantCrab::checkSpawnRules);
+        registerNormalSpawn(event, FLOWER_LEECH.get(), SpawnPlacementTypes.IN_WATER, FlowerLeech::checkSpawnRules);
+        registerNormalSpawn(event, FORGOTTEN_MAGIC_BOOK.get(), SpawnPlacementTypes.ON_GROUND, ForgottenMagicBook::checkSpawnRules);
+        registerNormalSpawn(event, HYPHA_WALKING_MUSHROOM.get(), SpawnPlacementTypes.ON_GROUND, HyphaWalkingMushroom::checkSpawnRules);
     }
 
     @SubscribeEvent
@@ -350,7 +355,7 @@ public class TAEntityTypes {
         event.put(MOON_QUEEN.get(), MoonQueen.createAttributes().build());
     }
 
-    private static <T extends Entity> void regsiterNormalSpawn(RegisterSpawnPlacementsEvent event, EntityType<T> entityType, SpawnPlacementType type, SpawnPlacements.SpawnPredicate<T> predicate) {
+    private static <T extends Entity> void registerNormalSpawn(RegisterSpawnPlacementsEvent event, EntityType<T> entityType, SpawnPlacementType type, SpawnPlacements.SpawnPredicate<T> predicate) {
         event.register(entityType, type, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, predicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 

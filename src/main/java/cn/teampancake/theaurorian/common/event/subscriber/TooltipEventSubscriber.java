@@ -4,9 +4,11 @@ import cn.teampancake.theaurorian.TheAurorian;
 import cn.teampancake.theaurorian.common.data.datagen.tags.TAItemTags;
 import cn.teampancake.theaurorian.common.registry.TAItems;
 import cn.teampancake.theaurorian.common.utils.TATooltipRenderUtils;
+import cn.teampancake.theaurorian.compat.mui.ModernUICompat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
@@ -26,11 +28,13 @@ public class TooltipEventSubscriber {
     private static final ResourceLocation CAT_BELL = TheAurorian.prefix("textures/gui/tooltips/cat_bell.png");
     private static final ResourceLocation TSLAT_SWORD = TheAurorian.prefix("textures/gui/tooltips/tslat_sword.png");
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onRenderTooltips(RenderTooltipEvent.Pre event) {
+        ModernUICompat.toggleModernUITooltipRenderer(true);
         ItemStack itemStack = event.getItemStack();
         if (itemStack.is(TAItemTags.HAS_CUSTOM_TOOLTIPS)) {
             event.setCanceled(true);
+            ModernUICompat.toggleModernUITooltipRenderer(false);
             if (itemStack.is(TAItemTags.BUILDING_BLOCK)) TooltipData.UNCOMMON_ITEM.renderTooltips(event);
             if (itemStack.is(TAItemTags.IS_RARE)) TooltipData.RARE_ITEM.renderTooltips(event);
             if (itemStack.is(TAItemTags.IS_EPIC)) TooltipData.EPIC_ITEM.renderTooltips(event);

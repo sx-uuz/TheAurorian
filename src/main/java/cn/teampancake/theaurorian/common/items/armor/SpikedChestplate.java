@@ -4,6 +4,7 @@ import cn.teampancake.theaurorian.TheAurorian;
 import cn.teampancake.theaurorian.client.model.entity.armor.SpikedChestplateModel;
 import cn.teampancake.theaurorian.client.renderer.layers.TAModelLayers;
 import cn.teampancake.theaurorian.common.items.TAArmorMaterials;
+import cn.teampancake.theaurorian.common.items.TAItemProperties;
 import cn.teampancake.theaurorian.common.registry.TAEnchantments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -31,7 +32,7 @@ import java.util.Set;
 public class SpikedChestplate extends BaseArmor<SpikedChestplateModel> {
 
     public SpikedChestplate() {
-        super(TAArmorMaterials.SPECTRAL, Type.CHESTPLATE, new Properties());
+        super(TAArmorMaterials.SPECTRAL, Type.CHESTPLATE, TAItemProperties.get());
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -180,21 +179,13 @@ abstract class AbstractAurorianBoss extends Monster implements MultiPhaseAttacke
                 }
             }
 
-            if (f != 0.0F && (f < this.getMaxHealth() || flag && damageSource.isCreativePlayer())) {
+            if (f != 0.0F && (f < this.getMaxHealth() || flag)) {
                 this.getCombatTracker().recordDamage(damageSource, f);
                 this.setBossHealth(this.getHealth() - f);
                 this.setAbsorptionAmount(this.getAbsorptionAmount() - f);
                 this.gameEvent(GameEvent.ENTITY_DAMAGE);
             }
         }
-    }
-
-    @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        boolean isBypasses = source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
-        boolean shouldImmuneFire = source.is(DamageTypeTags.IS_FIRE) && this.fireImmune();
-        boolean shouldImmuneFall = source.is(DamageTypeTags.IS_FALL) && this.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE);
-        return this.isRemoved() || this.isInvulnerable() && !isBypasses || shouldImmuneFire || shouldImmuneFall;
     }
 
     @Override

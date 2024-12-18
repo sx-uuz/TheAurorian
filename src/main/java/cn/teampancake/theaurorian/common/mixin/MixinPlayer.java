@@ -1,12 +1,8 @@
 package cn.teampancake.theaurorian.common.mixin;
 
-import cn.teampancake.theaurorian.common.registry.TAAttachmentTypes;
 import cn.teampancake.theaurorian.common.registry.TAEnchantments;
 import cn.teampancake.theaurorian.common.registry.TAMobEffects;
-import cn.teampancake.theaurorian.common.utils.TAEntityUtils;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.core.Holder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Abilities;
@@ -18,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.WebBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.attachment.AttachmentType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,33 +26,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayer extends LivingEntity {
 
     @Shadow @Final private Abilities abilities;
-    @Shadow protected FoodData foodData;
+    @Shadow public FoodData foodData;
 
     protected MixinPlayer(EntityType<? extends LivingEntity> type, Level level) {
         super(type, level);
-    }
-
-    @WrapWithCondition(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;heal(F)V"))
-    public boolean aiStep(Player player, float healAmount) {
-        return !TAEntityUtils.shouldForbiddenNaturalRegeneration(player);
     }
 
     @Inject(method = "wantsToStopRiding", at = @At(value = "HEAD"), cancellable = true)
     protected void wantsToStopRiding(CallbackInfoReturnable<Boolean> cir) {
         if (this.isPassenger() && this.hasEffect(TAMobEffects.PARALYSIS)) {
             cir.setReturnValue(false);
-        }
-    }
-
-    @Inject(method = "hurtArmor", at = @At(value = "HEAD"), cancellable = true)
-    protected void hurtArmor(DamageSource damageSource, float damage, CallbackInfo ci) {
-        if (this.hasEffect(TAMobEffects.CORRUPTION) || this.hasEffect(TAMobEffects.TOUGH)) {
-            if (this.hasEffect(TAMobEffects.CORRUPTION)) {
-                AttachmentType<Float> type = TAAttachmentTypes.ARMOR_HURT_ACCUMULATION.get();
-                this.setData(type, this.getData(type) + damage);
-            }
-
-            ci.cancel();
         }
     }
 
