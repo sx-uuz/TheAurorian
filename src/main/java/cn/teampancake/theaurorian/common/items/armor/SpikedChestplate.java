@@ -26,6 +26,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public class SpikedChestplate extends BaseArmor<SpikedChestplateModel> {
 
     public SpikedChestplate() {
@@ -54,7 +56,9 @@ public class SpikedChestplate extends BaseArmor<SpikedChestplateModel> {
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10));
                 stack.enchant(holder, 3);
             } else {
-                stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).keySet().remove(holder);
+                ItemEnchantments.Mutable itemenchantments = new ItemEnchantments.Mutable(stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+                itemenchantments.keySet().remove(holder);
+                stack.set(DataComponents.ENCHANTMENTS,itemenchantments.toImmutable());
             }
         }
     }
