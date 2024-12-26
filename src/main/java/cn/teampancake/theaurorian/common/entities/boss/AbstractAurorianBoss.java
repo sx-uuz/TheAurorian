@@ -72,18 +72,18 @@ abstract class AbstractAurorianBoss extends Monster implements MultiPhaseAttacke
 
     @Override
     protected void customServerAiStep() {
-        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+//        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         this.attackManager.tick();
     }
 
     @Override
     public void startSeenByPlayer(ServerPlayer player) {
-        this.bossEvent.addPlayer(player);
+//        this.bossEvent.addPlayer(player);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer player) {
-        this.bossEvent.removePlayer(player);
+//        this.bossEvent.removePlayer(player);
     }
 
     @Override
