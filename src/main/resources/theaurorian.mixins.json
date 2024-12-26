@@ -8,7 +8,9 @@
         "MixinFoodData",
         "MixinItem",
         "MixinItemStack",
-        "MixinPlayer"
+        "MixinLevel",
+        "MixinPlayer",
+        "MixinServerLevel"
     ],
     "client": [
         "MixinClientPacketListener",
