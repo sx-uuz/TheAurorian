@@ -11,15 +11,12 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.common.CommonHooks;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class TAItemProperties extends Item.Properties {
 
-    @Nullable
-    private DataComponentMap.Builder components;
     public List<TagKey<Item>> itemTagList = new ArrayList<>();
     public boolean hasTooltips = false;
     public boolean isDeveloperItem = false;
