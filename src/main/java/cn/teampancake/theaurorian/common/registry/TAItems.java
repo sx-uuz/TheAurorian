@@ -188,7 +188,7 @@ public class TAItems {
      */
     public static final DeferredHolder<Item, Item> SILENT_WOOD_BOW = ITEMS.register("silent_wood_bow", () -> new BowItem(TAItemProperties.get()
             .durability(384).addItemTag(ItemTags.DURABILITY_ENCHANTABLE, ItemTags.BOW_ENCHANTABLE, Tags.Items.TOOLS_BOW, TAItemTags.IS_EPIC)));
-    public static final DeferredHolder<Item, Item> KEEPERS_BOW = ITEMS.register("keepers_bow", () -> new BowItem(TAItemProperties.get()
+    public static final DeferredHolder<Item, Item> KEEPERS_BOW = ITEMS.register("keepers_bow", () -> new KeepersBow(TAItemProperties.get()
             .durability(512).rarity(Rarity.RARE).addItemTag(ItemTags.DURABILITY_ENCHANTABLE, ItemTags.BOW_ENCHANTABLE, Tags.Items.TOOLS_BOW, TAItemTags.IS_EPIC).hasTooltips()));
 
     /**

@@ -43,6 +43,7 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.entity.projectile.ThrownEgg;
@@ -493,6 +494,10 @@ public class EntityEventSubscriber {
                 boolean flag = projectile instanceof ThrownEgg || projectile instanceof Snowball;
                 if (flag && projectile.getOwner() instanceof Player player && player.hasEffect(TAMobEffects.PARALYSIS)) {
                     livingEntity.hurt(livingEntity.damageSources().thrown(projectile, player), 1.0F);
+                }
+
+                if (projectile instanceof AbstractArrow arrow && arrow.getData(TAAttachmentTypes.SHOOT_FROM_KEEPERS_BOW.get())) {
+                    livingEntity.invulnerableTime = 0;
                 }
             }
         }
