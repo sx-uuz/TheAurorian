@@ -1,18 +1,5 @@
 {
   "type": "minecraft:entity",
-  "functions": [
-    {
-      "add": false,
-      "conditions": [
-        {
-          "condition": "theaurorian:overworld_aurorian_mob",
-          "entity": "this"
-        }
-      ],
-      "count": 0.0,
-      "function": "minecraft:set_count"
-    }
-  ],
   "pools": [
     {
       "bonus_rolls": 0.0,

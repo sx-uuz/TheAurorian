@@ -1,29 +1,5 @@
 {
   "type": "minecraft:entity",
-  "functions": [
-    {
-      "add": false,
-      "conditions": [
-        {
-          "condition": "theaurorian:overworld_aurorian_mob",
-          "entity": "this"
-        }
-      ],
-      "count": 0.0,
-      "function": "minecraft:set_count"
-    },
-    {
-      "add": false,
-      "conditions": [
-        {
-          "condition": "theaurorian:overworld_aurorian_mob",
-          "entity": "this"
-        }
-      ],
-      "count": 0.0,
-      "function": "minecraft:set_count"
-    }
-  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -110,11 +86,6 @@
           "function": "minecraft:enchanted_count_increase"
         }
       ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [],
       "rolls": 1.0
     }
   ],

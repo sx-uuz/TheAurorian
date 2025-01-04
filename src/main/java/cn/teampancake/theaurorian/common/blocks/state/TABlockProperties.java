@@ -20,6 +20,7 @@ public class TABlockProperties extends BlockBehaviour.Properties {
     public List<TagKey<Block>> blockTagList = new ArrayList<>();
     public TALootType lootType = TALootType.UNSET;
     public boolean hasTooltips = false;
+    public boolean hasEmissivity = false;
     public boolean isBuildingBlock = false;
     public boolean isSimpleModelBlock = false;
     public boolean isRiversidePlant = false;
@@ -157,6 +158,11 @@ public class TABlockProperties extends BlockBehaviour.Properties {
 
     public TABlockProperties hasTooltips() {
         this.hasTooltips = true;
+        return this;
+    }
+
+    public TABlockProperties hasEmissivity() {
+        this.hasEmissivity = true;
         return this;
     }
 

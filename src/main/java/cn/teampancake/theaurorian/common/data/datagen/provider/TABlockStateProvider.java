@@ -205,7 +205,14 @@ public class TABlockStateProvider extends BlockStateProvider {
                 this.buttonBlock(buttonBlock, texture);
                 this.simpleBlockItem(buttonBlock, buttonInventory);
             } else if (block instanceof StairBlock stairBlock) {
-                this.stairsBlock(stairBlock, this.blockTexture(stairBlock.base));
+                if (stairBlock.properties() instanceof TABlockProperties properties) {
+                    if (properties.hasEmissivity) {
+                        this.registerLuminousStairStates(stairBlock, this.blockTexture(stairBlock.base));
+                    } else {
+                        this.stairsBlock(stairBlock, this.blockTexture(stairBlock.base));
+                    }
+                }
+
             } else if (block instanceof FenceBlockWithBase fenceBlock) {
                 ResourceLocation texture = this.blockTexture(fenceBlock.getBase());
                 this.fenceBlockWithRenderType(fenceBlock, texture, CUTOUT);
@@ -217,10 +224,24 @@ public class TABlockStateProvider extends BlockStateProvider {
                         this.modLoc(name + "top"), CUTOUT);
             } else if (block instanceof SlabBlockWithBase slabBlock) {
                 ResourceLocation texture = this.blockTexture(slabBlock.getBase());
-                this.slabBlock(slabBlock, texture, texture);
+                if (slabBlock.properties() instanceof TABlockProperties properties) {
+                    if (properties.hasEmissivity) {
+                        this.registerLuminousSlabStates(slabBlock, texture);
+                    } else {
+                        this.slabBlock(slabBlock, texture, texture);
+                    }
+                }
+
             } else if (block instanceof WallBlockWithBase wallBlock) {
                 ResourceLocation texture = this.blockTexture(wallBlock.getBase());
-                this.wallBlock(wallBlock, texture);
+                if (wallBlock.properties() instanceof TABlockProperties properties) {
+                    if (properties.hasEmissivity) {
+                        this.registerLuminousWallStates(wallBlock, texture);
+                    } else {
+                        this.wallBlock(wallBlock, texture);
+                    }
+                }
+
                 this.simpleBlockItem(wallBlock, this.models().wallInventory(this.name(wallBlock), texture));
             } else if (block instanceof VerticalStairBlockWithBase verticalStairBlock) {
                 this.registerVerticalStairStates(verticalStairBlock);
@@ -234,6 +255,44 @@ public class TABlockStateProvider extends BlockStateProvider {
                 this.registerKeyholeStates(keyhole);
             }
         }
+    }
+
+    private void registerLuminousStairStates(StairBlock stairBlock, ResourceLocation texture) {
+        String baseName = BuiltInRegistries.BLOCK.getKey(stairBlock).toString();
+        ModelFile stairs = this.models().stairs(baseName, texture, texture, texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile stairsInner = this.models().stairsInner(baseName + "_inner", texture, texture, texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile stairsOuter = this.models().stairsOuter(baseName + "_outer", texture, texture, texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        this.stairsBlock(stairBlock, stairs, stairsInner, stairsOuter);
+    }
+
+    private void registerLuminousSlabStates(SlabBlockWithBase slabBlock, ResourceLocation texture) {
+        ModelFile bottom = this.models().slab(this.name(slabBlock), texture, texture, texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile top = this.models().slabTop(this.name(slabBlock) + "_top", texture, texture, texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        this.slabBlock(slabBlock, bottom, top, this.models().getExistingFile(texture));
+    }
+
+    private void registerLuminousWallStates(WallBlockWithBase wallBlock, ResourceLocation texture) {
+        String baseName = BuiltInRegistries.BLOCK.getKey(wallBlock).toString();
+        ModelFile post = this.models().wallPost(baseName + "_post", texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile side = this.models().wallSide(baseName + "_side", texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile sideTall = this.models().wallSideTall(baseName + "_side_tall", texture)
+                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
+                        .emissivity((15), (15)).cullface(direction)).end();
+        this.wallBlock(wallBlock, post, side, sideTall);
     }
 
     private void registerBarStates(Block block) {
@@ -355,10 +414,17 @@ public class TABlockStateProvider extends BlockStateProvider {
         DirectionProperty facing = VerticalStairBlockWithBase.FACING;
         ModelFile modelFile = this.models().withExistingParent(this.name(block),
                 this.modLoc("block/vertical_stair")).texture("all", this.blockTexture(block.getBase()));
+        if (block.properties() instanceof TABlockProperties properties && properties.hasEmissivity) {
+            modelFile = this.models().withExistingParent(this.name(block), this.modLoc("block/vertical_stair"))
+                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
+                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
+        }
+
+        ModelFile finalModelFile = modelFile;
         facing.getPossibleValues().forEach(direction -> {
             int y = (int) (direction.toYRot() - 180.0F);
             this.getVariantBuilder(block).partialState().with(facing, direction).modelForState()
-                    .rotationY(y).uvLock(true).modelFile(modelFile).addModel();
+                    .rotationY(y).uvLock(true).modelFile(finalModelFile).addModel();
         });
     }
 
@@ -369,12 +435,27 @@ public class TABlockStateProvider extends BlockStateProvider {
                 this.mcLoc("block/cube_all")).texture("all", this.blockTexture(block.getBase()));
         BlockModelBuilder post = this.models().withExistingParent(this.name(block) + "_post",
                 this.modLoc("block/vertical_slab_post")).texture("all", this.blockTexture(block.getBase()));
+        if (block.properties() instanceof TABlockProperties properties && properties.hasEmissivity) {
+            normal = this.models().withExistingParent(this.name(block), this.modLoc("block/vertical_slab"))
+                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
+                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
+            full = this.models().withExistingParent(this.name(block) + "_full", this.mcLoc("block/cube_all"))
+                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
+                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
+            post = this.models().withExistingParent(this.name(block) + "_post", this.modLoc("block/vertical_slab_post"))
+                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
+                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
+        }
+
+        BlockModelBuilder finalFull = full;
+        BlockModelBuilder finalNormal = normal;
+        BlockModelBuilder finalPost = post;
         this.getVariantBuilder(block).forAllStatesExcept(state -> {
             VerticalSlabShape slabType = state.getValue(VerticalSlabBlockWithBase.SHAPE);
             VerticalSlabBlockWithBase.Connection connection = state.getValue(VerticalSlabBlockWithBase.CONNECTION);
-            ConfiguredModel model = slabType == VerticalSlabShape.FULL ? new ConfiguredModel(full)
-                    : connection == VerticalSlabBlockWithBase.Connection.NONE ? new ConfiguredModel(normal, 0,
-                    slabType.getModelRotation(), true) : new ConfiguredModel(post, 0,
+            ConfiguredModel model = slabType == VerticalSlabShape.FULL ? new ConfiguredModel(finalFull)
+                    : connection == VerticalSlabBlockWithBase.Connection.NONE ? new ConfiguredModel(finalNormal, 0,
+                    slabType.getModelRotation(), true) : new ConfiguredModel(finalPost, 0,
                     (int)(connection == VerticalSlabBlockWithBase.Connection.LEFT ? slabType.getDirection() :
                             slabType.getDirection().getClockWise()).toYRot() - 180, true);
             return new ConfiguredModel[] {model};
