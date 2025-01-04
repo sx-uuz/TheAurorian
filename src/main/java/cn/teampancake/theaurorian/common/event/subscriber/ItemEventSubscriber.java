@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -104,14 +105,15 @@ public class ItemEventSubscriber {
 
     @SubscribeEvent
     public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            if (!player.isShiftKeyDown() && !player.onGround()) return;
-            player.getArmorSlots().forEach(stack -> {
-                if (stack.is(TAItems.AURORIAN_SLIME_BOOTS.get()) && player.getCooldowns().isOnCooldown(stack.getItem())) {
-                    player.setDeltaMovement(player.getDeltaMovement().x, 0.5F, player.getDeltaMovement().z);
-                    player.getCooldowns().addCooldown(stack.getItem(), 100);
-                }
-            });
+        if (event.getEntity() instanceof Player player && player.isShiftKeyDown() && player.onGround()) {
+            ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
+            if (stack.is(TAItems.AURORIAN_SLIME_BOOTS) && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+                float jumpPower = player.getJumpPower(2.0F);
+                Vec3 vec3 = player.getDeltaMovement();
+                player.setDeltaMovement(vec3.x, jumpPower, vec3.z);
+                player.getCooldowns().addCooldown(stack.getItem(), 100);
+                player.resetFallDistance();
+            }
         }
     }
 

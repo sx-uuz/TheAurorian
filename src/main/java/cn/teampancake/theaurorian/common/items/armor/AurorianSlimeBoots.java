@@ -11,9 +11,13 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +25,10 @@ import org.jetbrains.annotations.Nullable;
 public class AurorianSlimeBoots extends BaseArmor<AurorianSlimeBootsModel> {
 
     public AurorianSlimeBoots() {
-        super(TAArmorMaterials.AURORIAN_SLIME, Type.BOOTS, TAItemProperties.get().rarity(Rarity.RARE));
+        super(TAArmorMaterials.AURORIAN_SLIME, Type.BOOTS, TAItemProperties.get().rarity(Rarity.RARE)
+                .attributes(ItemAttributeModifiers.builder().add(Attributes.SNEAKING_SPEED,
+                        new AttributeModifier(TheAurorian.prefix("slime_boots_sneaking_speed"), 1.0D,
+                                AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET).build()));
     }
 
     @Override
