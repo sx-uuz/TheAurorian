@@ -1,8 +1,8 @@
 package cn.teampancake.theaurorian.common.data.datagen.provider.tag;
 
 import cn.teampancake.theaurorian.TheAurorian;
+import cn.teampancake.theaurorian.common.registry.TAPaintingVariants;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.PaintingVariantTagsProvider;
 import net.minecraft.tags.PaintingVariantTags;
@@ -19,11 +19,21 @@ public class TAPaintingVariantTagsProvider extends PaintingVariantTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        provider.lookupOrThrow(Registries.PAINTING_VARIANT).listElementIds().forEach(key -> {
-            if (key.registry().getNamespace().equals(TheAurorian.MOD_ID)) {
-                this.tag(PaintingVariantTags.PLACEABLE).add(key);
-            }
-        });
+        this.tag(PaintingVariantTags.PLACEABLE).add(
+                TAPaintingVariants.AURORIAN_STEEL,
+                TAPaintingVariants.PROGRESSION,
+                TAPaintingVariants.DUNGEON,
+                TAPaintingVariants.KEEPER,
+                TAPaintingVariants.KNIGHT,
+                TAPaintingVariants.MOON,
+                TAPaintingVariants.PORTAL,
+                TAPaintingVariants.SLIME,
+                TAPaintingVariants.DISPLAY_PIC_2_X_41,
+                TAPaintingVariants.DISPLAY_PIC_2_X_42,
+                TAPaintingVariants.DISPLAY_PIC_9_X_41,
+                TAPaintingVariants.DISPLAY_PIC_9_X_42,
+                TAPaintingVariants.DISPLAY_PIC_9_X_43,
+                TAPaintingVariants.DISPLAY_PIC_9_X_44);
     }
 
 }
