@@ -61,13 +61,13 @@ public class TABlockRegUtils {
     public static <T extends Block> DeferredHolder<Block, Block> verticalStair(String name, Supplier<T> base, TABlockProperties properties, boolean... isWooden) {
         TABlockProperties p1 = properties.addBlockTag(TABlockTags.VERTICAL_STAIRS).lootType(TALootType.SELF).isBuildingBlock();
         TABlockProperties p2 = properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, TABlockTags.VERTICAL_STAIRS).lootType(TALootType.SELF).isBuildingBlock();
-        return register(name, () -> new VerticalStairBlockWithBase(base.get(), isWooden.length > 0 ? p1.useSimpleBlockItem() : p2.useSimpleBlockItem()));
+        return register(name, () -> new VerticalStairBlockWithBase(base.get(), isWooden.length > 0 ? p1.useSimpleBlockItem().noOcclusion() : p2.useSimpleBlockItem().noOcclusion()));
     }
 
     public static <T extends Block> DeferredHolder<Block, Block> verticalSlab(String name, Supplier<T> base, TABlockProperties properties, boolean... isWooden) {
         TABlockProperties p1 = properties.addBlockTag(TABlockTags.VERTICAL_SLABS).lootType(TALootType.SELF).isBuildingBlock();
         TABlockProperties p2 = properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, TABlockTags.VERTICAL_SLABS).lootType(TALootType.SELF).isBuildingBlock();
-        return register(name, () -> new VerticalSlabBlockWithBase(base.get(), isWooden.length > 0 ? p1.useSimpleBlockItem() : p2.useSimpleBlockItem()));
+        return register(name, () -> new VerticalSlabBlockWithBase(base.get(), isWooden.length > 0 ? p1.useSimpleBlockItem().noOcclusion() : p2.useSimpleBlockItem().noOcclusion()));
     }
 
     public static <T extends Block> DeferredHolder<Block, Block> pressurePlate(String name, Supplier<T> base, TABlockProperties properties, BlockSetType blockSetType) {
@@ -90,7 +90,7 @@ public class TABlockRegUtils {
 
     public static <T extends Block> DeferredHolder<Block, Block> stair(String name, Supplier<T> block, TABlockProperties properties, boolean... isWooden) {
         TABlockProperties newProperties = properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.STAIRS).lootType(TALootType.SELF).isBuildingBlock().useSimpleBlockItem();
-        return register(name, () -> new StairBlockWithBase(block.get().defaultBlockState(), isWooden.length > 0 ? newProperties : properties));
+        return register(name, () -> new StairBlockWithBase(block.get().defaultBlockState(), isWooden.length > 0 ? newProperties.noOcclusion() : properties.noOcclusion()));
     }
 
     public static <T extends Block> DeferredHolder<Block, Block> fence(String name, Supplier<T> base, TABlockProperties properties) {
@@ -103,11 +103,11 @@ public class TABlockRegUtils {
 
     public static <T extends Block> DeferredHolder<Block, Block> slab(String name, Supplier<T> base, TABlockProperties properties, boolean... isWooden) {
         TABlockProperties newProperties = properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.SLABS).lootType(TALootType.SELF).isBuildingBlock().useSimpleBlockItem();
-        return register(name, () -> new SlabBlockWithBase(base.get(), isWooden.length > 0 ? newProperties : properties));
+        return register(name, () -> new SlabBlockWithBase(base.get(), isWooden.length > 0 ? newProperties.noOcclusion() : properties.noOcclusion()));
     }
 
     public static <T extends Block> DeferredHolder<Block, Block> wall(String name, Supplier<T> base, TABlockProperties properties) {
-        return register(name, () -> new WallBlockWithBase(base.get(), properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.WALLS).lootType(TALootType.SELF).isBuildingBlock()));
+        return register(name, () -> new WallBlockWithBase(base.get(), properties.addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.WALLS).lootType(TALootType.SELF).isBuildingBlock().noOcclusion()));
     }
 
 }
