@@ -19,6 +19,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -39,11 +40,13 @@ public class TheAurorian {
     public TheAurorian(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, AurorianConfig.SPEC, FILENAME);
         TACreativeModeTabs.TABS.register(modEventBus);
+        TARunes.RUNES.register(modEventBus);
         TAItems.ITEMS.register(modEventBus);
         TABlocks.BLOCKS.register(modEventBus);
         TAFluids.FLUIDS.register(modEventBus);
         TAMenus.MENUS.register(modEventBus);
         TAFeatures.FEATURES.register(modEventBus);
+        TAStats.CUSTOM_STATS.register(modEventBus);
         TARecipes.RECIPE_TYPES.register(modEventBus);
         TARecipes.RECIPE_SERIALIZERS.register(modEventBus);
         TAConfiguredCarvers.CARVERS.register(modEventBus);
@@ -68,6 +71,7 @@ public class TheAurorian {
         TABiomeLayers.BIOME_LAYER_TYPES.register(modEventBus);
         TAMobEffects.MOB_EFFECTS.register(modEventBus);
         TAVillagerProfession.register(modEventBus);
+        modEventBus.addListener(this::init);
         modEventBus.addListener(this::createNewRegistries);
         modEventBus.addListener(this::registerExtraStuff);
         modEventBus.addListener(this::setRegistriesForDatapack);
@@ -87,6 +91,10 @@ public class TheAurorian {
             modEventBus.addListener(ProgressBarRenderer::registerProgressBarOverlay);
             modEventBus.addListener(FrostbiteOutlineRender::registerFrostbiteOverlay);
         }
+    }
+
+    public void init(FMLCommonSetupEvent event) {
+        event.enqueueWork(TAStats::init);
     }
 
     public void createNewRegistries(NewRegistryEvent event) {

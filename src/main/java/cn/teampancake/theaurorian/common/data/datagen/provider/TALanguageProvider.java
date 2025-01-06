@@ -62,6 +62,11 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("gamerule.nightmareModeMultiplier.description",
                 "Controls the multiplier of monster attributes when Nightmare Mode is enable.",
                 "用于控制噩梦模式开启后，怪物属性翻的倍数。");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_win_count", "Number of wins in the Rune Game", "符石游戏完成次数");
+        this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.status", "Rune Game Status: ", "符石游戏状态：");
+        this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.undone", "Undone", "未完成");
+        this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.done", "Done", "已完成");
+        this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.player", "Player: ", "玩家：");
 
         //MOD BIOMES
         this.addBiome(TABiomes.AURORIAN_FOREST, "Aurorian Forest", "谧树森林");

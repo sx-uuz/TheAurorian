@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class RuneGameLoader extends SimpleJsonResourceReloadListener {
     }
 
     public static int[][][] getRandomLevel() {
-        return RUNE_GAME.get((int) (Math.random() * RUNE_GAME.size()));
+        return RUNE_GAME.get(RandomSource.create().nextInt(RUNE_GAME.size()));
     }
 
 }

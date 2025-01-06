@@ -307,7 +307,7 @@ public class TAItems {
     public static final DeferredHolder<Item, Item> TROPHY_KEEPER = normal("trophy_keeper", TAItemProperties.get().addItemTag(TAItemTags.IS_LEGENDARY).hasTooltips());
     public static final DeferredHolder<Item, Item> TROPHY_SPIDER_MOTHER = normal("trophy_spider_mother", TAItemProperties.get().addItemTag(TAItemTags.IS_LEGENDARY).hasTooltips());
     public static final DeferredHolder<Item, Item> TROPHY_MOON_QUEEN = normal("trophy_moon_queen", TAItemProperties.get().addItemTag(TAItemTags.IS_LEGENDARY).hasTooltips());
-    public static final DeferredHolder<Item, Item> RUNE_KNOWLEDGE_FRAGMENT = normal("rune_knowledge_fragment", TAItemProperties.get().addItemTag(TAItemTags.IS_LEGENDARY));
+    public static final DeferredHolder<Item, Item> RUNE_KNOWLEDGE_FRAGMENT = ITEMS.register("rune_knowledge_fragment", RuneKnowledgeFragment::new);
 
     /**
      * Runestone
@@ -334,14 +334,16 @@ public class TAItems {
     public static final DeferredHolder<Item, Item> AURORIAN_BERRY = normal("aurorian_berry", TAItemProperties.get().addItemTag(TAItemTags.IS_RARE));
     public static final DeferredHolder<Item, Item> AURORIAN_CRYSTAL = ITEMS.register("aurorian_crystal", AurorianCrystal::new);
     public static final DeferredHolder<Item, Item> EQUINOX_MUSHROOM = normal("equinox_mushroom", TAItemProperties.get().addItemTag(TAItemTags.IS_RARE));
-    public static final DeferredHolder<Item, Item> DREAM_DYEING_CRYSTAL_FRAGMENT = normal("dream_dyeing_crystal_fragment", TAItemProperties.get().addItemTag(TAItemTags.HAS_CUSTOM_TOOLTIPS).hasTooltips());
+    public static final DeferredHolder<Item, Item> DREAM_DYEING_CRYSTAL_FRAGMENT = normal("dream_dyeing_crystal_fragment",
+            TAItemProperties.get().addItemTag(TAItemTags.HAS_CUSTOM_TOOLTIPS).hasTooltips());
     public static final DeferredHolder<Item, Item> WORLD_SCROLL_FRAGMENT = normal("world_scroll_fragment", TAItemProperties.get().addItemTag(TAItemTags.IS_RARE));
     public static final DeferredHolder<Item, Item> WORLD_SCROLL = ITEMS.register("world_scroll", WorldScroll::new);
     public static final DeferredHolder<Item, Item> DUNGEON_LOCATOR = ITEMS.register("dungeon_locator", DungeonLocatorItem::new);
     public static final DeferredHolder<Item, Item> WEBBING = ITEMS.register("webbing", () -> new SimpleThrowProjectProjectile(
             TAItemProperties.get(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, TAEntityTypes.WEBBING::get, 0.5F));
     public static final DeferredHolder<Item, Item> LIVING_DIVINING_ROD = ITEMS.register("living_divining_rod", LivingDiviningRod::new);
-    public static final DeferredHolder<Item, Item> LOCK_PICKS = ITEMS.register("lock_picks", () -> new Item(TAItemProperties.get().durability(10).addItemTag(TAItemTags.IS_EPIC).isSimpleModelItem()));
+    public static final DeferredHolder<Item, Item> LOCK_PICKS = ITEMS.register("lock_picks", () -> new Item(
+            TAItemProperties.get().durability(10).addItemTag(TAItemTags.IS_EPIC).isSimpleModelItem()));
     public static final DeferredHolder<Item, Item> MOON_WATER_BUCKET = ITEMS.register("moon_water_bucket", () -> new BucketItem(
             TAFluids.MOON_WATER_STILL.get(), TAItemProperties.get().stacksTo(1).addItemTag(TAItemTags.IS_RARE).isSimpleModelItem()));
     public static final DeferredHolder<Item, Item> AURORIAN_WINGED_FISH_BUCKET = ITEMS.register("aurorian_winged_fish_bucket", () -> new MobBucketItem(TAEntityTypes.AURORIAN_WINGED_FISH.get(),

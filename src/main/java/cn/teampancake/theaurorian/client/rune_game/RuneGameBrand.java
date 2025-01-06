@@ -1,14 +1,18 @@
 package cn.teampancake.theaurorian.client.rune_game;
 
+import cn.teampancake.theaurorian.TheAurorian;
 import cn.teampancake.theaurorian.api.IRune;
 import cn.teampancake.theaurorian.client.widget.RuneGameButton;
 import cn.teampancake.theaurorian.common.registry.TARunes;
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +20,6 @@ public class RuneGameBrand {
 
     public static final int BRAND_SIZE = 20;
     private final int DIFF = 20;
-    //    private final String elementName;
     private final ResourceLocation texture;
     protected RuneGameRectangle runeGameRectangle;
     private RuneGameButton button;
@@ -25,14 +28,13 @@ public class RuneGameBrand {
     private int x;
     private int y;
 
-    public RuneGameBrand(IRune texture) {
-        this.texture = TARunes.RUNE_GAME_TEXTURES.get(texture);
+    public RuneGameBrand(IRune rune) {
+        this.texture = TheAurorian.prefix("textures/gui/rune/sprite_rune_" + rune.name() + ".png");
     }
 
     public static IRune randomElement() {
-        return TARunes.RUNE_GAME_TEXTURES.keySet().stream()
-                .skip((int) (Math.random() * TARunes.RUNE_GAME_TEXTURES.size()))
-                .findFirst().orElse(TARunes.AURORIAN.get());
+        Collection<DeferredHolder<IRune, ? extends IRune>> entries = TARunes.RUNES.getEntries();
+        return entries.stream().toList().get(RandomSource.create().nextInt(entries.size())).get();
     }
 
     public ResourceLocation getTexture() {
@@ -92,10 +94,10 @@ public class RuneGameBrand {
         int validCount = getValidCount(level);
         List<RuneGameBrand> brandList = Lists.newArrayList();
         for (int i = 0; i < validCount; i = i + 3) {
-            IRune iRune = RuneGameBrand.randomElement();
-            brandList.add(new RuneGameBrand(iRune));
-            brandList.add(new RuneGameBrand(iRune));
-            brandList.add(new RuneGameBrand(iRune));
+            IRune rune = randomElement();
+            brandList.add(new RuneGameBrand(rune));
+            brandList.add(new RuneGameBrand(rune));
+            brandList.add(new RuneGameBrand(rune));
         }
 
         Collections.shuffle(brandList);

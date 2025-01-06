@@ -18,13 +18,18 @@ public class RuneGameButton extends Button {
         super(x, y, RuneGameBrand.BRAND_SIZE, RuneGameBrand.BRAND_SIZE, Component.nullToEmpty(""), onPress, DEFAULT_NARRATION);
     }
 
-    public void setBrand(RuneGameBrand brand) {
-        this.brand = brand;
-    }
-
     @Override
     public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         this.brand.renderBrand(graphics);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return this.active && this.visible;
+    }
+
+    public void setBrand(RuneGameBrand brand) {
+        this.brand = brand;
     }
 
     public void setPos(int x, int y) {

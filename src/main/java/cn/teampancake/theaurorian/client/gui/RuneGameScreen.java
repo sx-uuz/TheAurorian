@@ -6,12 +6,16 @@ import cn.teampancake.theaurorian.client.rune_game.RuneGameEliminate;
 import cn.teampancake.theaurorian.client.rune_game.RuneGameLayer;
 import cn.teampancake.theaurorian.client.rune_game.RuneGameMap;
 import cn.teampancake.theaurorian.client.widget.RuneGameButton;
+import cn.teampancake.theaurorian.common.network.WinRuneGameC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -23,6 +27,7 @@ public class RuneGameScreen extends Screen {
     protected final int checkAreaWidth = 166;
     protected final int checkAreaHeight = 28;
     protected int[][][] level;
+    @Nullable
     private RuneGameMap runeGameMap;
     private final RuneGameEliminate runeGameEliminate = new RuneGameEliminate();
     private boolean flag = true;
@@ -33,33 +38,38 @@ public class RuneGameScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        graphics.blit(BACKGROUND, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
         if (this.flag) {
-            this.runeGameMap = initMap();
             this.flag = false;
+            this.runeGameMap = this.initMap();
             this.runeGameMap.checkAll();
         }
 
-        Arrays.stream(this.runeGameMap.getLayers())
-                .flatMap(layer -> Arrays.stream(layer.getBrands()))
-                .flatMap(Arrays::stream)
-                .filter(brand -> brand != null && brand.hasBrand() != 0)
-                .forEach(brand -> {
-                    if (brand.isGray()) {
-                        brand.renderBrand(graphics);
-                    } else {
-                        RuneGameButton button = brand.getButton();
-                        if (button != null && !button.isAdded()) {
-                            this.addRenderableWidget(button);
-                            button.setAdded(true);
-                        }
-                    }
-                });
+        this.flatRuneGameMap(guiGraphics);
+        guiGraphics.blit(SLOTS, this.width / 2 - this.checkAreaWidth / 2, this.height - this.checkAreaHeight - 20, 0, 0, 166, 28, 166, 28);
+        this.runeGameEliminate.render(guiGraphics, this.width / 2 - checkAreaWidth / 2, this.height - this.checkAreaHeight - 20);
+        for (Renderable renderable : this.renderables) {
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+    }
 
-        graphics.blit(SLOTS, this.width / 2 - this.checkAreaWidth / 2, this.height - this.checkAreaHeight - 20, 0, 0, 166, 28, 166, 28);
-        this.runeGameEliminate.render(graphics, this.width / 2 - checkAreaWidth / 2, this.height - this.checkAreaHeight - 20);
-        super.render(graphics, mouseX, mouseY, partialTicks);
+    private void flatRuneGameMap(GuiGraphics guiGraphics) {
+        if (this.runeGameMap != null) {
+            Arrays.stream(this.runeGameMap.getLayers()).flatMap(layer -> Arrays.stream(layer.getBrands()))
+                    .flatMap(Arrays::stream).filter(brand -> brand != null && brand.hasBrand() != 0)
+                    .forEach(brand -> {
+                        if (brand.isGray()) {
+                            brand.renderBrand(guiGraphics);
+                        } else {
+                            RuneGameButton button = brand.getButton();
+                            if (button != null && !button.isAdded()) {
+                                this.addRenderableWidget(button);
+                                button.setAdded(true);
+                            }
+                        }
+                    });
+        }
     }
 
     private RuneGameMap initMap() {
@@ -82,7 +92,13 @@ public class RuneGameScreen extends Screen {
                                 this.removeWidget(button);
                                 brands[finalRow][finalCol] = null;
                                 this.runeGameEliminate.addSlot(brand);
-                                if (this.runeGameEliminate.getSlots().size() >= 7){
+                                int size = this.runeGameEliminate.getSlots().size();
+                                if (size >= 7) {
+                                    this.onClose();
+                                }
+
+                                if (this.renderables.isEmpty() && size < 3) {
+                                    PacketDistributor.sendToServer(new WinRuneGameC2SPacket(Boolean.TRUE));
                                     this.onClose();
                                 }
                             }

@@ -1,10 +1,7 @@
 package cn.teampancake.theaurorian.common.event.subscriber;
 
 import cn.teampancake.theaurorian.TheAurorian;
-import cn.teampancake.theaurorian.client.gui.AlchemyTableScreen;
-import cn.teampancake.theaurorian.client.gui.MoonlightForgeScreen;
-import cn.teampancake.theaurorian.client.gui.ScrapperScreen;
-import cn.teampancake.theaurorian.client.gui.TAWaitingScreen;
+import cn.teampancake.theaurorian.client.gui.*;
 import cn.teampancake.theaurorian.client.renderer.level.TASkyRenderer;
 import cn.teampancake.theaurorian.client.renderer.level.TASpecialEffects;
 import cn.teampancake.theaurorian.common.blocks.state.TAWoodType;
@@ -65,13 +62,19 @@ public class ModBusEventSubscriber {
         registrar.playToServer(CrystalRuneSetC2SPacket.TYPE,
                 CrystalRuneSetC2SPacket.STREAM_CODEC,
                 CrystalRuneSetC2SPacket::handle);
+        registrar.playToClient(StartRuneGameS2CPacket.TYPE,
+                StartRuneGameS2CPacket.STREAM_CODEC,
+                StartRuneGameS2CPacket::handle);
+        registrar.playToServer(WinRuneGameC2SPacket.TYPE,
+                WinRuneGameC2SPacket.STREAM_CODEC,
+                WinRuneGameC2SPacket::handle);
     }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new CrystallineSword.CrystallineSwordUseAnim(), TAItems.CRYSTALLINE_SWORD.get());
-        event.registerItem(new SilentWoodChestItem.RenderChestItem(), TAItems.SILENT_WOOD_CHEST.get());
+        event.registerItem(new CrystallineSword.CrystallineSwordUseAnim(), TAItems.CRYSTALLINE_SWORD);
+        event.registerItem(new SilentWoodChestItem.RenderChestItem(), TAItems.SILENT_WOOD_CHEST);
     }
 
     @OnlyIn(Dist.CLIENT)
