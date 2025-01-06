@@ -54,6 +54,11 @@ public class RuneGameScreen extends Screen {
         }
     }
 
+    @Override
+    protected void repositionElements() {
+
+    }
+
     private void flatRuneGameMap(GuiGraphics guiGraphics) {
         if (this.runeGameMap != null) {
             Arrays.stream(this.runeGameMap.getLayers()).flatMap(layer -> Arrays.stream(layer.getBrands()))
@@ -83,7 +88,7 @@ public class RuneGameScreen extends Screen {
                     if (brand != null && brand.hasBrand() != 0) {
                         int x = RuneGameBrand.BRAND_SIZE * col;
                         int y = RuneGameBrand.BRAND_SIZE * row;
-                        int x1 = this.width / 2 + x  - brands.length * RuneGameBrand.BRAND_SIZE / 2;
+                        int x1 = this.width / 2 + x - brands.length * RuneGameBrand.BRAND_SIZE / 2;
                         int y1 = this.height / 2 + y - brands[row].length * RuneGameBrand.BRAND_SIZE / 2;
                         int finalCol = col;
                         int finalRow = row;
