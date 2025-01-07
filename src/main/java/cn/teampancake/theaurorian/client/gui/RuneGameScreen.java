@@ -69,17 +69,7 @@ public class RuneGameScreen extends Screen {
             this.runeGameMap.checkAll();
             this.setButtonsState(false);
         });
-        this.quitGameButton = new TransparentButton(this.width / 2 - 100, this.height / 4 + 90, 200, 20, QUIT_GAME, button -> {
-            if (this.minecraft != null && this.gameStatus == GameStatus.WIN) {
-                LocalPlayer localPlayer = this.minecraft.player;
-                if (localPlayer != null && ModList.get().isLoaded("scattered_shards")) {
-                    ClientPacketListener connection = localPlayer.connection;
-                    connection.sendCommand("shard award @s theaurorian:mf_carnival_magician");
-                }
-            }
-
-            this.onClose();
-        });
+        this.quitGameButton = new TransparentButton(this.width / 2 - 100, this.height / 4 + 90, 200, 20, QUIT_GAME, button -> this.onClose());
         this.buttonList.add(this.addRenderableWidget(this.playAgainButton));
         this.buttonList.add(this.addRenderableWidget(this.quitGameButton));
         this.setButtonsState(false);
@@ -215,6 +205,13 @@ public class RuneGameScreen extends Screen {
                                     PacketDistributor.sendToServer(new RuneGameWinC2SPacket(Boolean.TRUE));
                                     this.gameStatus = GameStatus.WIN;
                                     this.gameOver = true;
+                                    if (this.minecraft != null) {
+                                        LocalPlayer localPlayer = this.minecraft.player;
+                                        if (localPlayer != null && ModList.get().isLoaded("scattered_shards")) {
+                                            ClientPacketListener connection = localPlayer.connection;
+                                            connection.sendCommand("shard award @s theaurorian:mf_carnival_magician");
+                                        }
+                                    }
                                 }
                             }
 
