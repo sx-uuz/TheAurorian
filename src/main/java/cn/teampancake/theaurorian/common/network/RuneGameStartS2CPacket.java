@@ -12,13 +12,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record StartRuneGameS2CPacket(String level) implements CustomPacketPayload {
+public record RuneGameStartS2CPacket(String level) implements CustomPacketPayload {
 
-    public static final Type<StartRuneGameS2CPacket> TYPE = new Type<>(TheAurorian.prefix("network.rune_game"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, StartRuneGameS2CPacket> STREAM_CODEC =
-            CustomPacketPayload.codec(StartRuneGameS2CPacket::write, StartRuneGameS2CPacket::new);
+    public static final Type<RuneGameStartS2CPacket> TYPE = new Type<>(TheAurorian.prefix("network.rune_game_start"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, RuneGameStartS2CPacket> STREAM_CODEC =
+            CustomPacketPayload.codec(RuneGameStartS2CPacket::write, RuneGameStartS2CPacket::new);
 
-    public StartRuneGameS2CPacket(FriendlyByteBuf buf) {
+    public RuneGameStartS2CPacket(FriendlyByteBuf buf) {
         this(buf.readUtf());
     }
 
@@ -31,7 +31,7 @@ public record StartRuneGameS2CPacket(String level) implements CustomPacketPayloa
         return TYPE;
     }
 
-    public static void handle(StartRuneGameS2CPacket packet, IPayloadContext context) {
+    public static void handle(RuneGameStartS2CPacket packet, IPayloadContext context) {
         if (!packet.level.isEmpty() && context.flow().isClientbound()) {
             int[][][] randomLevel = AlgorithmUtils.convertStringTo3D(packet.level);
             context.enqueueWork(() -> openScreen(randomLevel));

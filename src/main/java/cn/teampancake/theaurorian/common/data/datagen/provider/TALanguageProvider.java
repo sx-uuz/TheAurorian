@@ -62,11 +62,20 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("gamerule.nightmareModeMultiplier.description",
                 "Controls the multiplier of monster attributes when Nightmare Mode is enable.",
                 "用于控制噩梦模式开启后，怪物属性翻的倍数。");
-        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_win_count", "Number of wins in the Rune Game", "符石游戏完成次数");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_win_count", "Wins in the Rune Game", "符石游戏成功次数");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_play_count", "Play the Rune Game", "符石游戏游玩次数");
+        this.add("stat." + TheAurorian.MOD_ID + ".total_rune_game_time", " Times play the Rune Game", "符石游戏总游玩时间");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.status", "Rune Game Status: ", "符石游戏状态：");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.undone", "Undone", "未完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.done", "Done", "已完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.player", "Player: ", "玩家：");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.game_over", "Game Over", "游 戏 结 束");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.game_time", "Current Game Time: %s", "本场游戏用时：%s");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.play_again", "Play Again", "再来一次");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.quit_game", "Quit Game", "退出游戏");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.sec", "%1$ss", "%1$s秒");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.min_sec", "%1$sm%2$ss", "%1$s分%2$s秒");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.h_min_sec", "%1$sh%2$sm%3$ss", "%1$s时%2$s分%3$s秒");
 
         //MOD BIOMES
         this.addBiome(TABiomes.AURORIAN_FOREST, "Aurorian Forest", "谧树森林");
@@ -813,7 +822,7 @@ public class TALanguageProvider extends LanguageProvider {
         this.addEnchantment(TAEnchantments.FREEZE_ASPECT, "Freeze Aspect", "冰霜附加",
                 "Inflicts a continuous armor-piercing freezing effect when cause damage.","造成伤害时，会造成持续的无视盔甲的冰冻效果");
         this.addEnchantment(TAEnchantments.SPRING_OF_LIFE, "Spring of Life", "生命之泉",
-                "Regenerate health for a period of time continuously when HP is low.","生命值过低时，会一定时间内持续恢复生命值");
+                "Regenerate health for a period of key continuously when HP is low.","生命值过低时，会一定时间内持续恢复生命值");
         this.addEnchantment(TAEnchantments.EXPERIENCE_ORE, "Experience Ore", "经验矿石",
                 "Have a chance to gain additional experience when mining ores.","挖掘矿物时，有一定概率获得额外经验");
         this.addEnchantment(TAEnchantments.LEGENDARY_HERO, "Legendary Hero", "传说的勇者",
@@ -854,10 +863,10 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("messages." + TAItems.UMBRA_PICKAXE.get().getDescriptionId() + ".fail", "The remaining durability is less than 60 so select fail!", "选择失败，因为剩余耐久已不足60！");
 
         //MOD TOOLTIPS
-        this.addTooltips(TAItems.AURORIAN_STEEL_HELMET, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as time goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
-        this.addTooltips(TAItems.AURORIAN_STEEL_CHESTPLATE, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as time goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
-        this.addTooltips(TAItems.AURORIAN_STEEL_LEGGINGS, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as time goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
-        this.addTooltips(TAItems.AURORIAN_STEEL_BOOTS, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as time goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_HELMET, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as key goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_CHESTPLATE, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as key goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_LEGGINGS, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as key goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_BOOTS, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as key goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.CERULEAN_HELMET, "A blue armor but strength is not bad, which can temporarily protecting you for explore this world.", "强度不错的蓝色盔甲，能暂时保护你探索这个世界.");
         this.addTooltips(TAItems.CERULEAN_CHESTPLATE, "A blue armor but strength is not bad, which can temporarily protecting you for explore this world.", "强度不错的蓝色盔甲，能暂时保护你探索这个世界.");
         this.addTooltips(TAItems.CERULEAN_LEGGINGS, "A blue armor but strength is not bad, which can temporarily protecting you for explore this world.", "强度不错的蓝色盔甲，能暂时保护你探索这个世界.");
@@ -872,24 +881,24 @@ public class TALanguageProvider extends LanguageProvider {
         this.addTooltips(TAItems.SPECTRAL_BOOTS, "Attach the residual thought of soul. There is a 6% chance to clear all harmful effects when attack!", "附着魂灵的残念.每件盔甲都有 6% 的几率在攻击时净化身上的负面效果！");
         this.addTooltips(TAItems.SPIKED_CHESTPLATE, "Counter attack those enemies who attack you. Has Thorns III but only when crouched and give Slowness effect to the wearer when crouching.", "反击那些攻击你的敌人.潜行时将会获得荆棘III附魔与缓慢I效果！");
         this.addTooltips(TAItems.AURORIAN_SLIME_BOOTS, "Jump while sneaking to do an extra high jump! Also blocks fall damage.", "用处不错，但黏糊糊的感觉并不好.潜行时起跳会跳得更高，并且还能消除摔落伤害！");
-        this.addTooltips(TAItems.AURORIAN_STEEL_SWORD, "The truth blessing of the aurora! The enchantment in this sword will upgrade slowly as time goes on until the max level!", "真正的极光赐福！剑上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_SWORD, "The truth blessing of the aurora! The enchantment in this sword will upgrade slowly as key goes on until the max level!", "真正的极光赐福！剑上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.AURORIAN_STONE_SWORD, "Just a little stronger than the wood sword.", "仅仅只比木剑强力一点点.");
         this.addTooltips(TAItems.SILENT_WOOD_SWORD, "Even for self-defense, it is not recommended.", "即使是防身也并不推荐.");
-        this.addTooltips(TAItems.UMBRA_SWORD, "The cursed sword! Costs 20 durability amount to get Absorption, Weakness, Slowness II, Resistance III for 6s. The cool down time is 45s.", "诅咒之剑！右击消耗 20 点耐久度，立即获得伤害吸收、虚弱、缓慢 II、抗性提升 III 各 6 秒，冷却时间 45 秒.");
-        this.addTooltips(TAItems.AURORIANITE_SWORD, "Has the ability to levitate everyone nearby! Costs 5 durability amount to enable oneself and all surrounding creatures to achieve a Levitation effect that lasts for 3s when right click. The cool down time is 30s.",
+        this.addTooltips(TAItems.UMBRA_SWORD, "The cursed sword! Costs 20 durability amount to get Absorption, Weakness, Slowness II, Resistance III for 6s. The cool down key is 45s.", "诅咒之剑！右击消耗 20 点耐久度，立即获得伤害吸收、虚弱、缓慢 II、抗性提升 III 各 6 秒，冷却时间 45 秒.");
+        this.addTooltips(TAItems.AURORIANITE_SWORD, "Has the ability to levitate everyone nearby! Costs 5 durability amount to enable oneself and all surrounding creatures to achieve a Levitation effect that lasts for 3s when right click. The cool down key is 30s.",
                 "极光让周围的人与我一同失重！右键时消耗五点耐久，让自己与周围的所有生物获得持续三秒的飘浮效果，冷却时间为三十秒.");
         this.addTooltips(TAItems.CRYSTALLINE_SWORD, "Charge up to fire a Crystalline Beam! Charge up and costs 1 durability amount to fire a Crystalline Beam that unaffected by gravity!", "充能！发射水晶光束！长按右键蓄力，消耗一点耐久，蓄力满后松开右键发射出一道不受重力影响，速度略逊于弓箭的光柱.");
         this.addTooltips(TAItems.MOONSTONE_SWORD, "The queen's scorn! There is a chance that it will not costs durability in bright moon night, but there is a chance to costs 2 durability amount in aurora night.", "女王的蔑视！在皎月夜晚有几率不会消耗耐久，但在极光夜有几率消耗 2 点耐久.");
-        this.addTooltips(TAItems.AURORIAN_STEEL_SHOVEL, "The truth blessing of the aurora! The enchantment in this shovel will upgrade slowly as time goes on until the max level!", "真正的极光赐福！铲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_SHOVEL, "The truth blessing of the aurora! The enchantment in this shovel will upgrade slowly as key goes on until the max level!", "真正的极光赐福！铲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.AURORIAN_STONE_SHOVEL, "Just a little stronger than the wood shovel.", "仅仅只比木铲强力一点点.");
         this.addTooltips(TAItems.SILENT_WOOD_SHOVEL, "Even for digging, it is not recommended.", "即使是挖掘也并不推荐.");
         this.addTooltips(TAItems.MOONSTONE_SHOVEL, "The queen's scorn! There is a chance that it will not costs durability in bright moon night, but there is a chance to costs 2 durability amount in aurora night.", "女王的蔑视！在皎月夜晚有几率不会消耗耐久，但在极光夜有几率消耗 2 点耐久.");
-        this.addTooltips(TAItems.AURORIAN_STEEL_AXE, "The truth blessing of the aurora! The enchantment in this axe will upgrade slowly as time goes on until the max level!", "真正的极光赐福！斧上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_AXE, "The truth blessing of the aurora! The enchantment in this axe will upgrade slowly as key goes on until the max level!", "真正的极光赐福！斧上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.AURORIANITE_AXE, "The Aurorian let me have endless strength! Can chop down whole trees at the expense of extra 2 damage!", "极光让我力大无穷！以消耗额外的耐久为代价，砍倒整棵谧木树！！");
         this.addTooltips(TAItems.AURORIAN_STONE_AXE, "Just a little stronger than the wood axe.", "仅仅只比木斧强力一点点.");
         this.addTooltips(TAItems.SILENT_WOOD_AXE, "Magical Silentwood has a chance to heal itself when chopping Silentwood Logs!", "神奇的谧木工具在砍伐谧木时，有机会恢复自己的耐久！");
         this.addTooltips(TAItems.MOONSTONE_AXE, "The queen's scorn! There is a chance that it will not costs durability in bright moon night, but there is a chance to costs 2 durability amount in aurora night.", "女王的蔑视！在皎月夜晚有几率不会消耗耐久，但在极光夜有几率消耗 2 点耐久.");
-        this.addTooltips(TAItems.AURORIAN_STEEL_PICKAXE, "The truth blessing of the aurora! The enchantment in this pickaxe will upgrade slowly as time goes on until the max level!", "真正的极光赐福！镐上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_PICKAXE, "The truth blessing of the aurora! The enchantment in this pickaxe will upgrade slowly as key goes on until the max level!", "真正的极光赐福！镐上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.AURORIANITE_PICKAXE, "The Aurorian give me endless energy! Mines faster a short while after mining an ore!", "极光让我拥有无穷精力！持续的挖掘会缓慢提高挖掘速度！");
         this.addTooltips(TAItems.UMBRA_PICKAXE, "The cursed pickaxe! Select a block to gain bonus mining speed towards that type! Selecting a block costs a lot of durability.", "诅咒之镐！选择一种方块，对它进行挖掘的速度会有所提高，但是选择这一过程会减少大量耐久度！");
         this.addTooltips(TAItems.CRYSTALLINE_PICKAXE, "Praise the moonlight! Ores drop ingots plus a few nuggets!", "赞美月光！挖掘矿石会有额外掉落！");
@@ -898,7 +907,7 @@ public class TALanguageProvider extends LanguageProvider {
         this.addTooltips(TAItems.MOONSTONE_PICKAXE, "The queen's scorn! There is a chance that it will not costs durability in bright moon night, but there is a chance to costs 2 durability amount in aurora night.", "女王的蔑视！在皎月夜晚有几率不会消耗耐久，但在极光夜有几率消耗 2 点耐久.");
         this.addTooltips(TAItems.QUEENS_CHIPPER, "The soul of the poor queen is sealed in this pickaxe. So it has extremely strong destructive power. Right click can destroy dungeons that could not have been destroyed to form blocks!",
                 "可怜的女王，灵魂被封印在这把镐子里，让其拥有极强的破坏力.右击可以破坏原本无法破坏的地牢组成方块!");
-        this.addTooltips(TAItems.AURORIAN_STEEL_HOE, "The truth blessing of the aurora! The enchantment in this hoe will upgrade slowly as time goes on until the max level!", "真正的极光赐福！锄上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
+        this.addTooltips(TAItems.AURORIAN_STEEL_HOE, "The truth blessing of the aurora! The enchantment in this hoe will upgrade slowly as key goes on until the max level!", "真正的极光赐福！锄上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");
         this.addTooltips(TAItems.AURORIAN_STONE_HOE, "Just a little stronger than wood hoe.", "仅仅只比木锄强力一点点.");
         this.addTooltips(TAItems.SILENT_WOOD_HOE, "Even for hoeing, it is not recommended.", "即使是锄地也并不推荐.");
         this.addTooltips(TAItems.MOONSTONE_HOE, "The queen's scorn! There is a chance that it will not costs durability in bright moon night, but there is a chance to costs 2 durability amount in aurora night.", "女王的蔑视！在皎月夜晚有几率不会消耗耐久，但在极光夜有几率消耗 2 点耐久.");
@@ -913,10 +922,10 @@ public class TALanguageProvider extends LanguageProvider {
         this.addTooltips(TAItems.MOON_SHIELD, "Eulogize the queen! Hold block to Charge at foes and knock them up in the air!", "赞颂女王！右击蓄能，然后将敌人狠狠地击飞到空中！");
         this.addTooltips(TAItems.SILENT_WOOD_BOW, "Ordinary long-range weapons.", "普通的远程武器。");
         this.addTooltips(TAItems.KEEPERS_BOW, "Fires 3 arrows when fully drawn!", "完全充能后自动一次性射出三支箭矢！");
-        this.addTooltips(TAItems.LAVENDER_TEA, "Leisure time. Drink and got Resistance I in 15s.", "悠闲时光：饮用后获得持续15秒的抗性提升I效果。");
-        this.addTooltips(TAItems.SILK_BERRY_TEA, "Leisure time. Drink and got Regeneration I in 5s.", "悠闲时光：饮用后获得持续5秒的生命恢复I效果。");
-        this.addTooltips(TAItems.LAVENDER_SEEDY_TEA, "Leisure time. Drink and got Speed I in 5s.", "悠闲时光：饮用后获得持续10秒的速度I效果。");
-        this.addTooltips(TAItems.PETUNIA_TEA, "Leisure time. Drink and got strength I in 15s.", "悠闲时光：饮用后获得持续15秒的力量I效果。");
+        this.addTooltips(TAItems.LAVENDER_TEA, "Leisure key. Drink and got Resistance I in 15s.", "悠闲时光：饮用后获得持续15秒的抗性提升I效果。");
+        this.addTooltips(TAItems.SILK_BERRY_TEA, "Leisure key. Drink and got Regeneration I in 5s.", "悠闲时光：饮用后获得持续5秒的生命恢复I效果。");
+        this.addTooltips(TAItems.LAVENDER_SEEDY_TEA, "Leisure key. Drink and got Speed I in 5s.", "悠闲时光：饮用后获得持续10秒的速度I效果。");
+        this.addTooltips(TAItems.PETUNIA_TEA, "Leisure key. Drink and got strength I in 15s.", "悠闲时光：饮用后获得持续15秒的力量I效果。");
         this.addTooltips(TAItems.BEPSI, "How'd this get here??", "哪来的山寨货？？");
         this.addTooltips(TAItems.WEEPING_WILLOW_SAP, "A nice antidote, which will cleanse poison but gives you slowness. The duration depends on the remaining duration before the poison effect is removed.",
                 "不错的解毒剂！它能去除你的中毒效果，但却会使你获得缓慢效果，持续时间取决于中毒效果被移除之前的剩余持续时间。");
@@ -931,7 +940,7 @@ public class TALanguageProvider extends LanguageProvider {
         this.addTooltips(TAItems.DARK_STONE_SHRIMP, "The shell seems incredibly hard.", "外壳似乎坚硬无比。");
         this.addTooltips(TAItems.AURORIAN_COAL, "A fuel that better than coal.", "比普通煤炭更持久一点。");
         this.addTooltips(TAItems.AURORIANITE_INGOT, "Aurorian Blessing!", "极光加护！");
-        this.addTooltips(TAItems.AURORIAN_STEEL, "The truth blessing of the aurora! The enchantment will upgrade slowly as time goes on until the max level!", "真正的极光赐福！随着时间的推移，此物品上的附魔会升级！");
+        this.addTooltips(TAItems.AURORIAN_STEEL, "The truth blessing of the aurora! The enchantment will upgrade slowly as key goes on until the max level!", "真正的极光赐福！随着时间的推移，此物品上的附魔会升级！");
         this.addTooltips(TAItems.CERULEAN_INGOT, "A nice armor material.", "不错的装备材料。");
         this.addTooltips(TAItems.CRYSTALLINE_INGOT, "It's the cream of the bright moon! Praise the queen!", "皎月的精华！赞美女王！");
         this.addTooltips(TAItems.MOONSTONE_INGOT, "The queen's scorn! Moon Queen? Exile!", "女王的蔑视！极光女王？放逐！");

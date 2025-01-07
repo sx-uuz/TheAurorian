@@ -3,7 +3,7 @@ package cn.teampancake.theaurorian.common.items;
 import cn.teampancake.theaurorian.common.components.RuneGame;
 import cn.teampancake.theaurorian.common.data.datagen.tags.TAItemTags;
 import cn.teampancake.theaurorian.common.data.pack.RuneGameLoader;
-import cn.teampancake.theaurorian.common.network.StartRuneGameS2CPacket;
+import cn.teampancake.theaurorian.common.network.RuneGameStartS2CPacket;
 import cn.teampancake.theaurorian.common.registry.TADataComponents;
 import cn.teampancake.theaurorian.common.utils.AlgorithmUtils;
 import net.minecraft.ChatFormatting;
@@ -44,14 +44,9 @@ public class RuneKnowledgeFragment extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemInHand = player.getItemInHand(usedHand);
-        RuneGame runeGame = itemInHand.get(TADataComponents.RUNE_GAME);
-        if (runeGame != null && runeGame.isDone()) {
-            return InteractionResultHolder.fail(itemInHand);
-        }
-
         if (player instanceof ServerPlayer serverPlayer && !level.isClientSide && !RuneGameLoader.RUNE_GAME.isEmpty()) {
             String randomLevel = AlgorithmUtils.convert3DtoString(RuneGameLoader.getRandomLevel());
-            PacketDistributor.sendToPlayer(serverPlayer, new StartRuneGameS2CPacket(randomLevel));
+            PacketDistributor.sendToPlayer(serverPlayer, new RuneGameStartS2CPacket(randomLevel));
             return InteractionResultHolder.sidedSuccess(itemInHand, level.isClientSide());
         }
 

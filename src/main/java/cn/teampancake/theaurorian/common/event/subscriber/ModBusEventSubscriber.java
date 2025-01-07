@@ -62,12 +62,15 @@ public class ModBusEventSubscriber {
         registrar.playToServer(CrystalRuneSetC2SPacket.TYPE,
                 CrystalRuneSetC2SPacket.STREAM_CODEC,
                 CrystalRuneSetC2SPacket::handle);
-        registrar.playToClient(StartRuneGameS2CPacket.TYPE,
-                StartRuneGameS2CPacket.STREAM_CODEC,
-                StartRuneGameS2CPacket::handle);
-        registrar.playToServer(WinRuneGameC2SPacket.TYPE,
-                WinRuneGameC2SPacket.STREAM_CODEC,
-                WinRuneGameC2SPacket::handle);
+        registrar.playToClient(RuneGameStartS2CPacket.TYPE,
+                RuneGameStartS2CPacket.STREAM_CODEC,
+                RuneGameStartS2CPacket::handle);
+        registrar.playToServer(RuneGameWinC2SPacket.TYPE,
+                RuneGameWinC2SPacket.STREAM_CODEC,
+                RuneGameWinC2SPacket::handle);
+        registrar.playToServer(RuneGameAwardStatC2SPacket.TYPE,
+                RuneGameAwardStatC2SPacket.STREAM_CODEC,
+                RuneGameAwardStatC2SPacket::handle);
     }
 
     @OnlyIn(Dist.CLIENT)

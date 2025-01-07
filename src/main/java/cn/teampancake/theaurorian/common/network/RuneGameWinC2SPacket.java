@@ -15,13 +15,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record WinRuneGameC2SPacket(boolean isWin) implements CustomPacketPayload {
+public record RuneGameWinC2SPacket(boolean isWin) implements CustomPacketPayload {
 
-    public static final Type<WinRuneGameC2SPacket> TYPE = new Type<>(TheAurorian.prefix("network.win_rune_game"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, WinRuneGameC2SPacket> STREAM_CODEC =
-            CustomPacketPayload.codec(WinRuneGameC2SPacket::write, WinRuneGameC2SPacket::new);
+    public static final Type<RuneGameWinC2SPacket> TYPE = new Type<>(TheAurorian.prefix("network.rune_game_win"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, RuneGameWinC2SPacket> STREAM_CODEC =
+            CustomPacketPayload.codec(RuneGameWinC2SPacket::write, RuneGameWinC2SPacket::new);
 
-    public WinRuneGameC2SPacket(FriendlyByteBuf buf) {
+    public RuneGameWinC2SPacket(FriendlyByteBuf buf) {
         this(buf.readBoolean());
     }
 
@@ -34,7 +34,7 @@ public record WinRuneGameC2SPacket(boolean isWin) implements CustomPacketPayload
         return TYPE;
     }
 
-    public static void handle(WinRuneGameC2SPacket packet, IPayloadContext context) {
+    public static void handle(RuneGameWinC2SPacket packet, IPayloadContext context) {
         if (context.player() instanceof ServerPlayer player) {
             ItemStack itemInHand = player.getItemInHand(player.getUsedItemHand());
             DataComponentType<RuneGame> component = TADataComponents.RUNE_GAME.get();
