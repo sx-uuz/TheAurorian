@@ -19,7 +19,7 @@ import java.util.List;
 public class RuneGameBrand {
 
     public static final int BRAND_SIZE = 20;
-    private final int DIFF = 20;
+    private static final int DIFF = 20;
     private final ResourceLocation texture;
     protected RuneGameRectangle runeGameRectangle;
     private RuneGameButton button;

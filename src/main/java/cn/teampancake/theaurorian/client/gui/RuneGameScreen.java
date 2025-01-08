@@ -47,7 +47,9 @@ public class RuneGameScreen extends Screen {
     private RuneGameMap runeGameMap;
     private final RuneGameEliminate runeGameEliminate = new RuneGameEliminate();
     private final List<Button> buttonList = Lists.newArrayList();
+    @Nullable
     private TransparentButton playAgainButton;
+    @Nullable
     private TransparentButton quitGameButton;
     private GameStatus gameStatus = GameStatus.PLAYING;
     private boolean flag = true;
@@ -87,12 +89,17 @@ public class RuneGameScreen extends Screen {
             this.runeGameMap.checkAll();
         }
 
-        guiGraphics.blit(SLOTS, this.width / 2 - this.checkAreaWidth / 2, this.height - this.checkAreaHeight - 20, 0, 0, 166, 28, 166, 28);
+        int slotsX = this.width / 2 - this.checkAreaWidth / 2;
+        int slotsY = this.height - this.checkAreaHeight - 20;
+        guiGraphics.blit(SLOTS, slotsX, slotsY, 0, 0, this.checkAreaWidth, this.checkAreaHeight, this.checkAreaWidth, this.checkAreaHeight);
         this.runeGameEliminate.render(guiGraphics, this.width / 2 - checkAreaWidth / 2, this.height - this.checkAreaHeight - 20);
         if (this.gameOver) {
-            this.buttonList.add(this.addRenderableWidget(this.playAgainButton));
-            this.buttonList.add(this.addRenderableWidget(this.quitGameButton));
-            this.setButtonsState(true);
+            if (this.playAgainButton != null && this.quitGameButton != null) {
+                this.buttonList.add(this.addRenderableWidget(this.playAgainButton));
+                this.buttonList.add(this.addRenderableWidget(this.quitGameButton));
+                this.setButtonsState(true);
+            }
+
             PoseStack pose = guiGraphics.pose();
             pose.pushPose();
             pose.scale(2.5F, 2.5F, 2.5F);
