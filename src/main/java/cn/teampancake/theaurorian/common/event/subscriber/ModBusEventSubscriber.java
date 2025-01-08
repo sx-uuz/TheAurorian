@@ -71,6 +71,12 @@ public class ModBusEventSubscriber {
         registrar.playToServer(RuneGameAwardStatC2SPacket.TYPE,
                 RuneGameAwardStatC2SPacket.STREAM_CODEC,
                 RuneGameAwardStatC2SPacket::handle);
+        registrar.playToServer(RuneGameTimeConsumingRecordC2SPacket.TYPE,
+                RuneGameTimeConsumingRecordC2SPacket.STREAM_CODEC,
+                RuneGameTimeConsumingRecordC2SPacket::handle);
+        registrar.playToServer(RuneGameAwardShardC2SPacket.TYPE,
+                RuneGameAwardShardC2SPacket.STREAM_CODEC,
+                RuneGameAwardShardC2SPacket::handle);
     }
 
     @OnlyIn(Dist.CLIENT)

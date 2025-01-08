@@ -62,15 +62,17 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("gamerule.nightmareModeMultiplier.description",
                 "Controls the multiplier of monster attributes when Nightmare Mode is enable.",
                 "用于控制噩梦模式开启后，怪物属性翻的倍数。");
-        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_win_count", "Wins in the Rune Game", "符石游戏成功次数");
-        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_play_count", "Play the Rune Game", "符石游戏游玩次数");
-        this.add("stat." + TheAurorian.MOD_ID + ".total_rune_game_time", " Times play the Rune Game", "符石游戏总游玩时间");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_win_count", "§6Wins in the Rune Game", "§6符石游戏成功次数");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_play_count", "§6Play the Rune Game", "§6符石游戏游玩次数");
+        this.add("stat." + TheAurorian.MOD_ID + ".total_rune_game_time", "§6Times play the Rune Game", "§6符石游戏总游玩时间");
+        this.add("stat." + TheAurorian.MOD_ID + ".rune_game_best_time", "§6Best time consuming of play the Rune Game", "§6符石游戏成功最少耗时");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.status", "Rune Game Status: ", "符石游戏状态：");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.undone", "Undone", "未完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.done", "Done", "已完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.player", "Player: ", "玩家：");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.game_over", "Game Over", "游 戏 结 束");
-        this.add(TheAurorian.MOD_ID + ".rune_game_screen.game_time", "Current Game Time: %s", "本场游戏用时：%s");
+        this.add(TheAurorian.MOD_ID + ".rune_game_screen.current_game_info",
+                "Current Game Time: %1$s, Best Time: %2$s", "本场游戏用时：%1$s，最佳用时：%2$s");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.play_again", "Play Again", "再来一次");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.quit_game", "Quit Game", "退出游戏");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.sec", "%1$ss", "%1$s秒");

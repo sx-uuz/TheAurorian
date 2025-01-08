@@ -7,8 +7,11 @@ import cn.teampancake.theaurorian.client.rune_game.RuneGameLayer;
 import cn.teampancake.theaurorian.client.rune_game.RuneGameMap;
 import cn.teampancake.theaurorian.client.widget.RuneGameButton;
 import cn.teampancake.theaurorian.client.widget.TransparentButton;
+import cn.teampancake.theaurorian.common.network.RuneGameAwardShardC2SPacket;
 import cn.teampancake.theaurorian.common.network.RuneGameAwardStatC2SPacket;
+import cn.teampancake.theaurorian.common.network.RuneGameTimeConsumingRecordC2SPacket;
 import cn.teampancake.theaurorian.common.network.RuneGameWinC2SPacket;
+import cn.teampancake.theaurorian.common.registry.TAStats;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -16,11 +19,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.Stat;
+import net.minecraft.stats.Stats;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
@@ -106,11 +110,21 @@ public class RuneGameScreen extends Screen {
             int color = this.gameStatus == GameStatus.WIN ? 5635925 : 16733525;
             guiGraphics.drawCenteredString(this.font, GAME_OVER, this.width / 5, 25, color);
             pose.popPose();
-            pose.pushPose();
-            Component gameTimeText = this.formatElapsedTime((this.gameTime / 20)).withStyle(ChatFormatting.YELLOW);
-            Component gameTimeInfo = Component.translatable(PREFIX + "game_time", gameTimeText);
-            guiGraphics.drawCenteredString(this.font, gameTimeInfo, this.width / 2, 100, 16777215);
-            pose.popPose();
+            if (this.minecraft != null) {
+                pose.pushPose();
+                LocalPlayer player = this.minecraft.player;
+                Component bestGameTime = Component.empty();
+                if (player != null && this.gameStatus == GameStatus.WIN) {
+                    Stat<ResourceLocation> stat = Stats.CUSTOM.get(TAStats.RUNE_GAME_BEST_TIME.get());
+                    bestGameTime = formatElapsedTime(player.getStats().getValue(stat)).withStyle(ChatFormatting.GREEN);
+                }
+
+                Component gameTimeText = formatElapsedTime(this.gameTime).withStyle(ChatFormatting.YELLOW);
+                Component currentGameInfo = Component.translatable(PREFIX + "current_game_info", gameTimeText, bestGameTime);
+                guiGraphics.drawCenteredString(this.font, currentGameInfo, this.width / 2, 100, 16777215);
+                pose.popPose();
+            }
+
             if (this.runeGameMap != null) {
                 Arrays.stream(this.runeGameMap.getLayers()).flatMap(layer -> Arrays.stream(layer.getBrands()))
                         .flatMap(Arrays::stream).filter(brand -> brand != null && brand.hasBrand() != 0)
@@ -141,7 +155,8 @@ public class RuneGameScreen extends Screen {
         }
     }
 
-    private MutableComponent formatElapsedTime(int elapsedSeconds) {
+    public static MutableComponent formatElapsedTime(int elapsedTicks) {
+        int elapsedSeconds = elapsedTicks / 20;
         int minutes = elapsedSeconds / 60;
         int seconds = elapsedSeconds % 60;
         int hours = minutes / 60;
@@ -180,6 +195,17 @@ public class RuneGameScreen extends Screen {
         }
     }
 
+    private void awardShard() {
+        if (this.minecraft != null) {
+            LocalPlayer localPlayer = this.minecraft.player;
+            if (localPlayer != null && ModList.get().isLoaded("scattered_shards")) {
+                String playerName = localPlayer.getName().getString();
+                String shardName = "theaurorian:mf_carnival_magician";
+                PacketDistributor.sendToServer(new RuneGameAwardShardC2SPacket(playerName, shardName));
+            }
+        }
+    }
+
     private RuneGameMap initMap() {
         RuneGameMap runeGameMap = new RuneGameMap(this.level);
         for (int i = 0; i < runeGameMap.getLayers().length; i++) {
@@ -210,15 +236,10 @@ public class RuneGameScreen extends Screen {
                                 if (this.renderables.isEmpty() && size < 3) {
                                     PacketDistributor.sendToServer(new RuneGameAwardStatC2SPacket(0));
                                     PacketDistributor.sendToServer(new RuneGameWinC2SPacket(Boolean.TRUE));
+                                    PacketDistributor.sendToServer(new RuneGameTimeConsumingRecordC2SPacket(this.gameTime));
                                     this.gameStatus = GameStatus.WIN;
                                     this.gameOver = true;
-                                    if (this.minecraft != null) {
-                                        LocalPlayer localPlayer = this.minecraft.player;
-                                        if (localPlayer != null && ModList.get().isLoaded("scattered_shards")) {
-                                            ClientPacketListener connection = localPlayer.connection;
-                                            connection.sendCommand("shard award @s theaurorian:mf_carnival_magician");
-                                        }
-                                    }
+                                    this.awardShard();
                                 }
                             }
 
