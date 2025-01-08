@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/template_wall_side_tall",
-  "ambientocclusion": false,
   "elements": [
     {
       "faces": {
@@ -13,7 +12,6 @@
           "texture": "#wall"
         },
         "east": {
-          "cullface": "east",
           "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
@@ -22,14 +20,6 @@
         },
         "north": {
           "cullface": "north",
-          "neoforge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
-          "texture": "#wall"
-        },
-        "south": {
-          "cullface": "south",
           "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
@@ -45,7 +35,6 @@
           "texture": "#wall"
         },
         "west": {
-          "cullface": "west",
           "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
@@ -54,14 +43,14 @@
         }
       },
       "from": [
+        4,
         0,
-        0,
-        0
+        4
       ],
       "to": [
+        12,
         16,
-        16,
-        16
+        12
       ]
     }
   ],

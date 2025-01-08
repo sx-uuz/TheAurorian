@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/template_wall_post",
-  "ambientocclusion": false,
   "elements": [
     {
       "faces": {
@@ -54,14 +53,14 @@
         }
       },
       "from": [
+        4,
         0,
-        0,
-        0
+        4
       ],
       "to": [
+        12,
         16,
-        16,
-        16
+        12
       ]
     }
   ],

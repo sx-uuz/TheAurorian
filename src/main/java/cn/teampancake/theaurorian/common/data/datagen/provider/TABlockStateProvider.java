@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class TABlockStateProvider extends BlockStateProvider {
@@ -258,40 +259,102 @@ public class TABlockStateProvider extends BlockStateProvider {
     }
 
     private void registerLuminousStairStates(StairBlock stairBlock, ResourceLocation texture) {
-        String baseName = BuiltInRegistries.BLOCK.getKey(stairBlock).toString();
-        ModelFile stairs = this.models().stairs(baseName, texture, texture, texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
-                        .emissivity((15), (15)).cullface(direction)).end();
-        ModelFile stairsInner = this.models().stairsInner(baseName + "_inner", texture, texture, texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
-                        .emissivity((15), (15)).cullface(direction)).end();
-        ModelFile stairsOuter = this.models().stairsOuter(baseName + "_outer", texture, texture, texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
-                        .emissivity((15), (15)).cullface(direction)).end();
+        ModelFile stairs = this.models().stairs(this.name(stairBlock), texture, texture, texture)
+                .element().from(0.0F, 0.0F, 0.0F).to(16.0F, 8.0F, 16.0F)
+                .face(Direction.DOWN).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#bottom").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#top").emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .uvs(0.0F, 8.0F, 16.0F, 16.0F).cullface(direction)
+                        .emissivity((15), (15)), Set.of(Direction.DOWN, Direction.UP)).end()
+                .element().from(8.0F, 8.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+                .face(Direction.UP).uvs(8.0F, 0.0F, 16.0F, 16.0F).texture("#top").cullface(Direction.UP).emissivity((15), (15)).end()
+                .face(Direction.NORTH).uvs(0.0F, 0.0F, 8.0F, 8.0F).texture("#side").cullface(Direction.NORTH).emissivity((15), (15)).end()
+                .face(Direction.SOUTH).uvs(8.0F, 0.0F, 16.0F, 8.0F).texture("#side").cullface(Direction.SOUTH).emissivity((15), (15)).end()
+                .face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 8.0F).texture("#side").emissivity((15), (15)).end()
+                .face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 8.0F).texture("#side").cullface(Direction.EAST).emissivity((15), (15)).end().end();
+        ModelFile stairsInner = this.models().stairsInner(this.name(stairBlock) + "_inner", texture, texture, texture)
+                .element().from(0.0F, 0.0F, 0.0F).to(16.0F, 8.0F, 16.0F)
+                .face(Direction.DOWN).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#bottom").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#top").emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .uvs(0.0F, 8.0F, 16.0F, 16.0F).cullface(direction)
+                        .emissivity((15), (15)), Set.of(Direction.DOWN, Direction.UP)).end()
+                .element().from(8.0F, 8.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+                .face(Direction.UP).uvs(8.0F, 0.0F, 16.0F, 16.0F).texture("#top").cullface(Direction.UP).emissivity((15), (15)).end()
+                .face(Direction.NORTH).uvs(0.0F, 0.0F, 8.0F, 8.0F).texture("#side").cullface(Direction.NORTH).emissivity((15), (15)).end()
+                .face(Direction.SOUTH).uvs(8.0F, 0.0F, 16.0F, 8.0F).texture("#side").cullface(Direction.SOUTH).emissivity((15), (15)).end()
+                .face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 8.0F).texture("#side").emissivity((15), (15)).end()
+                .face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 8.0F).texture("#side").cullface(Direction.EAST).emissivity((15), (15)).end().end()
+                .element().from(0.0F, 8.0F, 8.0F).to(8.0F, 16.0F, 16.0F)
+                .face(Direction.UP).uvs(0.0F, 8.0F,  8.0F, 16.0F).texture("#top").cullface(Direction.UP).emissivity((15), (15)).end()
+                .face(Direction.NORTH).uvs(8.0F, 0.0F, 16.0F,  8.0F).texture("#side").emissivity((15), (15)).end()
+                .face(Direction.SOUTH).uvs(0.0F, 0.0F,  8.0F,  8.0F).texture("#side").cullface(Direction.SOUTH).emissivity((15), (15)).end()
+                .face(Direction.WEST).uvs(8.0F, 0.0F, 16.0F,  8.0F).texture("#side").cullface(Direction.WEST).emissivity((15), (15)).end().end();
+        ModelFile stairsOuter = this.models().stairsOuter(this.name(stairBlock) + "_outer", texture, texture, texture)
+                .element().from(0.0F, 0.0F, 0.0F).to(16.0F, 8.0F, 16.0F)
+                .face(Direction.DOWN).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#bottom").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#top").emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .uvs(0.0F, 8.0F, 16.0F, 16.0F).cullface(direction)
+                        .emissivity((15), (15)), Set.of(Direction.DOWN, Direction.UP)).end()
+                .element().from(8.0F, 8.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+                .face(Direction.UP).uvs(8.0F, 0.0F, 16.0F, 16.0F).texture("#top").cullface(Direction.UP).emissivity((15), (15)).end()
+                .face(Direction.NORTH).uvs(0.0F, 0.0F, 8.0F, 8.0F).texture("#side").emissivity((15), (15)).end()
+                .face(Direction.SOUTH).uvs(8.0F, 0.0F, 16.0F, 8.0F).texture("#side").cullface(Direction.SOUTH).emissivity((15), (15)).end()
+                .face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 8.0F).texture("#side").emissivity((15), (15)).end()
+                .face(Direction.EAST).uvs(0.0F, 0.0F, 8.0F, 8.0F).texture("#side").cullface(Direction.EAST).emissivity((15), (15)).end().end();
         this.stairsBlock(stairBlock, stairs, stairsInner, stairsOuter);
     }
 
     private void registerLuminousSlabStates(SlabBlockWithBase slabBlock, ResourceLocation texture) {
         ModelFile bottom = this.models().slab(this.name(slabBlock), texture, texture, texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
-                        .emissivity((15), (15)).cullface(direction)).end();
+                .element().from(0.0F, 0.0F, 0.0F).to(16.0F, 8.0F, 16.0F)
+                .face(Direction.DOWN).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#bottom").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#top").emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .uvs(0.0F, 8.0F, 16.0F, 16.0F).cullface(direction)
+                        .emissivity((15), (15)), Set.of(Direction.DOWN, Direction.UP)).end();
         ModelFile top = this.models().slabTop(this.name(slabBlock) + "_top", texture, texture, texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#side")
-                        .emissivity((15), (15)).cullface(direction)).end();
+                .element().from(0.0F, 8.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+                .face(Direction.DOWN).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#bottom").emissivity((15), (15)).end()
+                .face(Direction.UP).uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                .texture("#top").cullface(Direction.UP).emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#side")
+                        .uvs(0.0F, 0.0F, 16.0F, 8.0F).cullface(direction)
+                        .emissivity((15), (15)), Set.of(Direction.DOWN, Direction.UP)).end();
         this.slabBlock(slabBlock, bottom, top, this.models().getExistingFile(texture));
     }
 
     private void registerLuminousWallStates(WallBlockWithBase wallBlock, ResourceLocation texture) {
         String baseName = BuiltInRegistries.BLOCK.getKey(wallBlock).toString();
         ModelFile post = this.models().wallPost(baseName + "_post", texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
-                        .emissivity((15), (15)).cullface(direction)).end();
+                .element().from(4.0F, 0.0F, 4.0F).to(12.0F, 16.0F, 12.0F)
+                .face(Direction.DOWN).texture("#wall").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).texture("#wall").cullface(Direction.UP).emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#wall").cullface(direction)
+                        .emissivity((15), (15)).end(), Set.of(Direction.DOWN, Direction.UP)).end();
         ModelFile side = this.models().wallSide(baseName + "_side", texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
-                        .emissivity((15), (15)).cullface(direction)).end();
+                .element().from(4.0F, 0.0F, 4.0F).to(12.0F, 16.0F, 12.0F)
+                .face(Direction.DOWN).texture("#wall").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.NORTH).texture("#wall").cullface(Direction.NORTH).emissivity((15), (15)).end()
+                .allFacesExcept((direction, faceBuilder) -> faceBuilder.texture("#wall").cullface(direction)
+                        .emissivity((15), (15)).end(), Set.of(Direction.DOWN, Direction.NORTH, Direction.SOUTH)).end();
         ModelFile sideTall = this.models().wallSideTall(baseName + "_side_tall", texture)
-                .ao(false).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#wall")
-                        .emissivity((15), (15)).cullface(direction)).end();
+                .element().from(4.0F, 0.0F, 4.0F).to(12.0F, 16.0F, 12.0F)
+                .face(Direction.DOWN).texture("#wall").cullface(Direction.DOWN).emissivity((15), (15)).end()
+                .face(Direction.UP).texture("#wall").cullface(Direction.UP).emissivity((15), (15)).end()
+                .face(Direction.NORTH).texture("#wall").cullface(Direction.NORTH).emissivity((15), (15)).end()
+                .face(Direction.WEST).texture("#wall").emissivity((15), (15)).end()
+                .face(Direction.EAST).texture("#wall").emissivity((15), (15)).end().end();
         this.wallBlock(wallBlock, post, side, sideTall);
     }
 
@@ -411,51 +474,34 @@ public class TABlockStateProvider extends BlockStateProvider {
     }
 
     private void registerVerticalStairStates(VerticalStairBlockWithBase block) {
+        boolean flag = block.properties() instanceof TABlockProperties properties && properties.hasEmissivity;
         DirectionProperty facing = VerticalStairBlockWithBase.FACING;
         ModelFile modelFile = this.models().withExistingParent(this.name(block),
-                this.modLoc("block/vertical_stair")).texture("all", this.blockTexture(block.getBase()));
-        if (block.properties() instanceof TABlockProperties properties && properties.hasEmissivity) {
-            modelFile = this.models().withExistingParent(this.name(block), this.modLoc("block/vertical_stair"))
-                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
-                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
-        }
-
-        ModelFile finalModelFile = modelFile;
+                this.modLoc("block/" + (flag ? "luminous_vertical_stair" : "vertical_stair")))
+                .texture("all", this.blockTexture(block.getBase()));
         facing.getPossibleValues().forEach(direction -> {
             int y = (int) (direction.toYRot() - 180.0F);
             this.getVariantBuilder(block).partialState().with(facing, direction).modelForState()
-                    .rotationY(y).uvLock(true).modelFile(finalModelFile).addModel();
+                    .rotationY(y).uvLock(true).modelFile(modelFile).addModel();
         });
     }
 
     private void registerVerticalSlabStates(VerticalSlabBlockWithBase block) {
+        boolean flag = block.properties() instanceof TABlockProperties properties && properties.hasEmissivity;
         BlockModelBuilder normal = this.models().withExistingParent(this.name(block),
-                this.modLoc("block/vertical_slab")).texture("all", this.blockTexture(block.getBase()));
+                this.modLoc("block/" + (flag ? "luminous_vertical_slab" : "vertical_slab")))
+                .texture("all", this.blockTexture(block.getBase()));
         BlockModelBuilder full = this.models().withExistingParent(this.name(block) + "_full",
                 this.mcLoc("block/cube_all")).texture("all", this.blockTexture(block.getBase()));
         BlockModelBuilder post = this.models().withExistingParent(this.name(block) + "_post",
-                this.modLoc("block/vertical_slab_post")).texture("all", this.blockTexture(block.getBase()));
-        if (block.properties() instanceof TABlockProperties properties && properties.hasEmissivity) {
-            normal = this.models().withExistingParent(this.name(block), this.modLoc("block/vertical_slab"))
-                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
-                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
-            full = this.models().withExistingParent(this.name(block) + "_full", this.mcLoc("block/cube_all"))
-                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
-                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
-            post = this.models().withExistingParent(this.name(block) + "_post", this.modLoc("block/vertical_slab_post"))
-                    .texture("all", this.blockTexture(block.getBase())).ao(false).element()
-                    .allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").emissivity((15), (15)).cullface(direction)).end();
-        }
-
-        BlockModelBuilder finalFull = full;
-        BlockModelBuilder finalNormal = normal;
-        BlockModelBuilder finalPost = post;
+                this.modLoc("block/" + (flag ? "luminous_vertical_slab_post" : "vertical_slab_post")))
+                .texture("all", this.blockTexture(block.getBase()));
         this.getVariantBuilder(block).forAllStatesExcept(state -> {
             VerticalSlabShape slabType = state.getValue(VerticalSlabBlockWithBase.SHAPE);
             VerticalSlabBlockWithBase.Connection connection = state.getValue(VerticalSlabBlockWithBase.CONNECTION);
-            ConfiguredModel model = slabType == VerticalSlabShape.FULL ? new ConfiguredModel(finalFull)
-                    : connection == VerticalSlabBlockWithBase.Connection.NONE ? new ConfiguredModel(finalNormal, 0,
-                    slabType.getModelRotation(), true) : new ConfiguredModel(finalPost, 0,
+            ConfiguredModel model = slabType == VerticalSlabShape.FULL ? new ConfiguredModel(full)
+                    : connection == VerticalSlabBlockWithBase.Connection.NONE ? new ConfiguredModel(normal, 0,
+                    slabType.getModelRotation(), true) : new ConfiguredModel(post, 0,
                     (int)(connection == VerticalSlabBlockWithBase.Connection.LEFT ? slabType.getDirection() :
                             slabType.getDirection().getClockWise()).toYRot() - 180, true);
             return new ConfiguredModel[] {model};

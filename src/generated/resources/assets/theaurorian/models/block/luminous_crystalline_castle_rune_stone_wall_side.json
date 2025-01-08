@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/template_wall_side",
-  "ambientocclusion": false,
   "elements": [
     {
       "faces": {
@@ -28,14 +27,6 @@
           },
           "texture": "#wall"
         },
-        "south": {
-          "cullface": "south",
-          "neoforge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
-          "texture": "#wall"
-        },
         "up": {
           "cullface": "up",
           "neoforge_data": {
@@ -54,14 +45,14 @@
         }
       },
       "from": [
+        4,
         0,
-        0,
-        0
+        4
       ],
       "to": [
+        12,
         16,
-        16,
-        16
+        12
       ]
     }
   ],

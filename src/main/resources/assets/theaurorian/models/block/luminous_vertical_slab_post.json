@@ -1,0 +1,60 @@
+{
+    "textures": {
+        "particle": "#all"
+    },
+    "elements": [
+        {
+            "from": [0, 0, 0],
+            "to": [8, 16, 8],
+            "faces": {
+                "down": {
+                    "cullface": "down",
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                },
+                "up": {
+                    "cullface": "up",
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                },
+                "north": {
+                    "cullface": "north",
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                },
+                "east": {
+                    "cullface": "east",
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                },
+                "south": {
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                },
+                "west": {
+                    "cullface": "west",
+                    "neoforge_data": {
+                        "block_light": 15,
+                        "sky_light": 15
+                    },
+                    "texture": "#all"
+                }
+            }
+        }
+    ]
+}

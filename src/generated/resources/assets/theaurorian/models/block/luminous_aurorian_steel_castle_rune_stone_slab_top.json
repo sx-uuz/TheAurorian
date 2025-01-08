@@ -1,16 +1,14 @@
 {
   "parent": "minecraft:block/slab_top",
-  "ambientocclusion": false,
   "elements": [
     {
       "faces": {
         "down": {
-          "cullface": "down",
           "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
-          "texture": "#side"
+          "texture": "#bottom"
         },
         "east": {
           "cullface": "east",
@@ -42,7 +40,7 @@
             "block_light": 15,
             "sky_light": 15
           },
-          "texture": "#side"
+          "texture": "#top"
         },
         "west": {
           "cullface": "west",
@@ -55,7 +53,7 @@
       },
       "from": [
         0,
-        0,
+        8,
         0
       ],
       "to": [
