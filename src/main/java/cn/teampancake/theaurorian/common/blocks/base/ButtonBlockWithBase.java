@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
-public class ButtonBlockWithBase extends ButtonBlock implements IHasBaseBlock {
+public class ButtonBlockWithBase extends ButtonBlock {
 
     private final Block base;
 
@@ -13,7 +13,6 @@ public class ButtonBlockWithBase extends ButtonBlock implements IHasBaseBlock {
         this.base = base;
     }
 
-    @Override
     public Block getBase() {
         return this.base;
     }

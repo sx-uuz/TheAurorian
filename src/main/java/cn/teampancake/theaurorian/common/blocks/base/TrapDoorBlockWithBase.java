@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
-public class TrapDoorBlockWithBase extends TrapDoorBlock implements IHasBaseBlock {
+public class TrapDoorBlockWithBase extends TrapDoorBlock {
 
     private final Block base;
 
@@ -13,7 +13,6 @@ public class TrapDoorBlockWithBase extends TrapDoorBlock implements IHasBaseBloc
         this.base = base;
     }
 
-    @Override
     public Block getBase() {
         return this.base;
     }

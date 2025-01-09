@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 import java.util.Locale;
 
-public class VerticalSlabBlockWithBase extends Block implements SimpleWaterloggedBlock, IHasBaseBlock {
+public class VerticalSlabBlockWithBase extends Block implements SimpleWaterloggedBlock {
 
     public static final EnumProperty<VerticalSlabShape> SHAPE = EnumProperty.create("shape", VerticalSlabShape.class);
     public static final EnumProperty<Connection> CONNECTION = EnumProperty.create("connection", Connection.class);
@@ -139,7 +139,6 @@ public class VerticalSlabBlockWithBase extends Block implements SimpleWaterlogge
         return type == PathComputationType.WATER && state.getFluidState().is(FluidTags.WATER);
     }
 
-    @Override
     public Block getBase() {
         return this.base;
     }
