@@ -116,7 +116,9 @@ public class RuneGameScreen extends Screen {
                 Component bestGameTime = Component.empty();
                 if (player != null && this.gameStatus == GameStatus.WIN) {
                     Stat<ResourceLocation> stat = Stats.CUSTOM.get(TAStats.RUNE_GAME_BEST_TIME.get());
-                    bestGameTime = formatElapsedTime(player.getStats().getValue(stat)).withStyle(ChatFormatting.GREEN);
+                    int value = player.getStats().getValue(stat);
+                    int time = value == 0 ? this.gameTime : value;
+                    bestGameTime = formatElapsedTime(time).withStyle(ChatFormatting.GREEN);
                 }
 
                 Component gameTimeText = formatElapsedTime(this.gameTime).withStyle(ChatFormatting.YELLOW);
