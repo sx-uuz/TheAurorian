@@ -24,6 +24,11 @@ public class AurorianVillagerRenderer extends LivingEntityRenderer<AurorianVilla
     }
 
     @Override
+    protected boolean shouldShowName(AurorianVillager entity) {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(AurorianVillager aurorianVillager) {
         VillagerData data = aurorianVillager.getVillagerData();
         if (data.getProfession().equals(TAVillagerProfession.PROF_ASTROLOGER.get())){
