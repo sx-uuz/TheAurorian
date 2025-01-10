@@ -186,8 +186,8 @@ public class EntityEventSubscriber {
                     entity.startRiding(sitEntity);
                 }
 
-                if (i > 0) {
-                    entity.setData(TAAttachmentTypes.TICKS_FROSTBITE, Math.max(0, i - 2));
+                if (i > -1) {
+                    entity.setData(TAAttachmentTypes.TICKS_FROSTBITE, Math.max(0, i - 10));
                     if (entity instanceof ServerPlayer serverPlayer) {
                         PacketDistributor.sendToPlayer(serverPlayer, new FrostbiteS2CPacket(i));
                     }
