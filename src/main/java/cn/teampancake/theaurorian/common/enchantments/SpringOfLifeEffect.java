@@ -34,20 +34,21 @@ public record SpringOfLifeEffect(int placeholder) implements EnchantmentEntityEf
             Holder<Enchantment> holder1 = TAEnchantments.get(level, Enchantments.BINDING_CURSE);
             Holder<Enchantment> holder2 = TAEnchantments.get(level, TAEnchantments.SPRING_OF_LIFE);
             CompoundTag tag = chestItem.getOrDefault(SPRING_OF_LIFE, CustomData.EMPTY).copyTag();
-            Set<Holder<Enchantment>> holderSet = chestItem.getTagEnchantments().keySet();
+            Set<Holder<Enchantment>> holderSet = chestItem.getTagEnchantments().enchantments.keySet();
             boolean shouldHeal = tag.getBoolean("should_heal_player");
             int healAmount = tag.getInt("enchant_armor_heal_amount");
-            if (player.getHealth() < player.getMaxHealth() * 0.1F && !shouldHeal) {
+            if (player.getHealth() <= player.getMaxHealth() * 0.1F && !shouldHeal) {
                 tag.putBoolean("should_heal_player", Boolean.TRUE);
                 chestItem.set(SPRING_OF_LIFE, CustomData.of(tag));
                 chestItem.enchant(holder1, 1);
+                player.clearFire();
             }
 
             if (shouldHeal) {
                 tag.putInt("enchant_armor_heal_amount", healAmount + 1);
                 chestItem.set(SPRING_OF_LIFE, CustomData.of(tag));
                 player.heal((player.getMaxHealth() * 0.01F));
-                if (healAmount > 100) {
+                if (healAmount == 100) {
                     holderSet.remove(holder1);
                     holderSet.remove(holder2);
                 }
