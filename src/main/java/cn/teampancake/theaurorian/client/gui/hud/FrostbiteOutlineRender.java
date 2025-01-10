@@ -21,14 +21,13 @@ public class FrostbiteOutlineRender {
         if (minecraft.getCameraEntity() instanceof Player player) {
             int i = player.getData(TAAttachmentTypes.TICKS_FROSTBITE);
             int j = player.getTicksRequiredToFreeze();
-            if (player.getTicksFrozen() <= 0 && i > 0) {
+            if (player.getTicksFrozen() <= 0 && i > -1) {
                 float percentFrozen = (float) Math.min(i, j) / (float) j;
                 minecraft.gui.renderTextureOverlay(guiGraphics, POWDER_SNOW_OUTLINE_LOCATION, percentFrozen);
             }
         }
 
         RenderSystem.disableBlend();
-        minecraft.getProfiler().pop();
     }
 
     public static void registerFrostbiteOverlay(RegisterGuiLayersEvent event) {

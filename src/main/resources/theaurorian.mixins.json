@@ -13,8 +13,11 @@
         "MixinServerLevel"
     ],
     "client": [
+        "MixinClientLevel",
         "MixinClientPacketListener",
-        "MixinMinecraft"
+        "MixinLevelRenderer",
+        "MixinMinecraft",
+        "MixinMouseHandler"
     ],
     "injectors": {
         "defaultRequire": 1

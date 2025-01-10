@@ -18,17 +18,18 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.CalculatePlayerTurnEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 
 import java.awt.*;
+import java.util.Objects;
 
 @EventBusSubscriber(modid = TheAurorian.MOD_ID, value = Dist.CLIENT)
 public class ClientEventSubscriber {
@@ -41,42 +42,45 @@ public class ClientEventSubscriber {
     @SubscribeEvent
     public static void onMovementInputUpdate(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer localPlayer) {
-            localPlayer.getActiveEffectsMap().values().forEach(instance -> {
-                if (instance.is(TAMobEffects.CONFUSION)) {
-                    ConfusionEffect.onMovementInputUpdate(event.getInput(), localPlayer);
-                }
-            });
+            if (localPlayer.hasEffect(TAMobEffects.CONFUSION)) {
+                ConfusionEffect.onMovementInputUpdate(event.getInput(), localPlayer);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCalculatePlayerTurn(CalculatePlayerTurnEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.hasEffect(TAMobEffects.STUN)) {
+            event.setMouseSensitivity(0.0D);
         }
     }
 
     @SubscribeEvent
     public static void onViewportComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
-        if (player == null) return;
-        player.getActiveEffectsMap().forEach((effect, instance) -> {
-            if (instance.is(TAMobEffects.CONFUSION)) {
-                if (instance.getAmplifier() == 1) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (player.hasEffect(TAMobEffects.CONFUSION)) {
+                int amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.CONFUSION)).getAmplifier();
+                if (amplifier == 1) {
                     float rotation = Mth.sin(player.tickCount / 10.0F) * 45.0F;
                     event.setRoll(rotation);
                 }
 
-                if (instance.getAmplifier() == 2) {
+                if (amplifier == 2) {
                     event.setRoll(180.0F);
                 }
             }
 
-            if (instance.is(TAMobEffects.TREMOR)) {
-                RandomSource rng = player.level().random;
-                Entity cameraEntity = minecraft.getCameraEntity();
-                float tremorAmount = 0.5F;
-                if (cameraEntity != null) {
-                    float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(Boolean.TRUE);
-                    float d =  Mth.sin((cameraEntity.tickCount + partialTick) * 0.5F) * tremorAmount;
-                    event.getCamera().move((d * rng.nextFloat()), (d * rng.nextFloat()), (d * rng.nextFloat()));
-                }
+            if (player.hasEffect(TAMobEffects.TREMOR)) {
+                RandomSource random = player.level().random;
+                float amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.TREMOR)).getAmplifier();
+                float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(Boolean.TRUE);
+                float f =  Mth.sin((player.tickCount + partialTick) * 0.5F) * ((amplifier + 1.0F) * 0.5F);
+                moveCamera(event.getCamera(), (f * random.nextFloat()), (f * random.nextFloat()), (f * random.nextFloat()));
             }
-        });
+        }
     }
 
     @SubscribeEvent
@@ -98,6 +102,10 @@ public class ClientEventSubscriber {
                 event.setRed(Color.WHITE.getRed());
                 event.setGreen(Color.WHITE.getGreen());
                 event.setBlue(Color.WHITE.getBlue());
+            } else if (localPlayer.hasEffect(TAMobEffects.FROSTBITE)) {
+                event.setRed(0.623F);
+                event.setGreen(0.734F);
+                event.setBlue(0.785F);
             }
         }
     }
@@ -109,6 +117,11 @@ public class ClientEventSubscriber {
             if (localPlayer.hasEffect(TAMobEffects.EIDOLON_POISON)) {
                 event.setNearPlaneDistance(0.0F);
                 event.setFarPlaneDistance(renderDistance);
+                event.setFogShape(FogShape.CYLINDER);
+                event.setCanceled(true);
+            } else if (localPlayer.hasEffect(TAMobEffects.FROSTBITE)) {
+                event.setNearPlaneDistance(0.0F);
+                event.setFarPlaneDistance(4.0F);
                 event.setFogShape(FogShape.CYLINDER);
                 event.setCanceled(true);
             }
@@ -147,6 +160,13 @@ public class ClientEventSubscriber {
         graphics.blit(atlasLocation, (guiWidth - 180) / 2, event.getY() + barYOffset, 0, 0, progress, barHeight);
         graphics.drawString(font, description, strX, event.getY() + textYOffset, textColor);
         event.setIncrement(frameHeight + 3);
+    }
+
+    private static void moveCamera(Camera camera, float zoom, float dy, float dx) {
+        double d0 = camera.getLookVector().x() * zoom + camera.getUpVector().x() * dy + camera.getLeftVector().x() * dx;
+        double d1 = camera.getLookVector().y() * zoom + camera.getUpVector().y() * dy + camera.getLeftVector().y() * dx;
+        double d2 = camera.getLookVector().z() * zoom + camera.getUpVector().z() * dy + camera.getLeftVector().z() * dx;
+        camera.setPosition(new Vec3(camera.getPosition().x + d0, camera.getPosition().y + d1, camera.getPosition().z + d2));
     }
 
 }
