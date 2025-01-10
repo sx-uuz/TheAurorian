@@ -33,7 +33,14 @@ public class TAPaintingVariantTagsProvider extends PaintingVariantTagsProvider {
                 TAPaintingVariants.DISPLAY_PIC_9_X_41,
                 TAPaintingVariants.DISPLAY_PIC_9_X_42,
                 TAPaintingVariants.DISPLAY_PIC_9_X_43,
-                TAPaintingVariants.DISPLAY_PIC_9_X_44);
+                TAPaintingVariants.DISPLAY_PIC_9_X_44,
+                TAPaintingVariants.DISPLAY_PIC_8_X_41,
+                TAPaintingVariants.DISPLAY_PIC_8_X_42,
+                TAPaintingVariants.DISPLAY_PIC_8_X_43,
+                TAPaintingVariants.DISPLAY_PIC_8_X_44,
+                TAPaintingVariants.DISPLAY_PIC_8_X_45,
+                TAPaintingVariants.DISPLAY_PIC_8_X_46,
+                TAPaintingVariants.DISPLAY_PIC_8_X_47);
     }
 
 }
