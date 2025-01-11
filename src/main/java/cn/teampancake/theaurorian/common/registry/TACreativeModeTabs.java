@@ -24,7 +24,7 @@ public class TACreativeModeTabs {
 
     static {
         TABS.register("normal_tab", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + TheAurorian.MOD_ID + ".normal"))
-                .icon(() -> new ItemStack(TAItems.AURORIAN_STEEL.get())).displayItems((params, output) -> {
+                .icon(() -> new ItemStack(TAItems.AURORIAN_CRYSTAL.get())).displayItems((params, output) -> {
                     TAItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(item -> !isDeveloperItem(item) && !isBuildingBlock(item)).forEach(output::accept);
                     params.holders().lookup(Registries.PAINTING_VARIANT).ifPresent(lookup -> CreativeModeTabs.generatePresetPaintings(output, params.holders(), lookup,
                             holder -> holder.is(PaintingVariantTags.PLACEABLE) && holder.value().assetId().getNamespace().equals(TheAurorian.MOD_ID),
