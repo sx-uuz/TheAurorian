@@ -9,6 +9,7 @@
         "MixinItem",
         "MixinItemStack",
         "MixinLevel",
+        "MixinLivingEntity",
         "MixinPlayer",
         "MixinServerLevel"
     ],
