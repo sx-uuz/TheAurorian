@@ -23,10 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.event.*;
 
 import java.awt.*;
 import java.util.Objects;
@@ -75,7 +72,7 @@ public class ClientEventSubscriber {
     @SubscribeEvent
     public static void onViewportComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = Minecraft.getInstance().player;
+        LocalPlayer player = minecraft.player;
         if (player != null) {
             if (player.hasEffect(TAMobEffects.CONFUSION)) {
                 int amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.CONFUSION)).getAmplifier();

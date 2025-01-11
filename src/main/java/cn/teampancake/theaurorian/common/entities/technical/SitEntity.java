@@ -19,12 +19,8 @@ public class SitEntity extends Entity {
         super(type, level);
     }
 
-    public SitEntity(Level level, BlockPos pos, double yOffset) {
+    public SitEntity(Level level) {
         super(TAEntityTypes.SIT.get(), level);
-        double x = pos.getX() + 0.5D;
-        double y = pos.getY() + yOffset;
-        double z = pos.getZ() + 0.5D;
-        this.setPos(x, y, z);
     }
 
     @Override

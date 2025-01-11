@@ -181,7 +181,8 @@ public class EntityEventSubscriber {
             if (!level.isClientSide()) {
                 int i = entity.getData(TAAttachmentTypes.TICKS_FROSTBITE);
                 if (entity.hasEffect(TAMobEffects.PARALYSIS) && entity.getVehicle() == null) {
-                    SitEntity sitEntity = new SitEntity(level, entity.getOnPos(), 0.7D);
+                    SitEntity sitEntity = new SitEntity(level);
+                    sitEntity.setPos(entity.position());
                     level.addFreshEntity(sitEntity);
                     entity.startRiding(sitEntity);
                 }
