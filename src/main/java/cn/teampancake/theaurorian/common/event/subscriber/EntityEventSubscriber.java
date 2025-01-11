@@ -315,7 +315,7 @@ public class EntityEventSubscriber {
         }
 
         if (source.getEntity() instanceof Player player) {
-            ItemStack itemInHand = entity.getItemInHand(entity.getUsedItemHand());
+            ItemStack itemInHand = player.getItemInHand(player.getUsedItemHand());
             Set<Holder<Enchantment>> holderSet = itemInHand.getTagEnchantments().keySet();
             if (holderSet.contains(TAEnchantments.get(player.level(), TAEnchantments.LEGENDARY_HERO))) {
                 List<LivingEntity> entities = player.level().getEntitiesOfClass(
