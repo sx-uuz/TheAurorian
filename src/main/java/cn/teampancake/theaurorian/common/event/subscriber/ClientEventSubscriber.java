@@ -23,8 +23,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.CalculatePlayerTurnEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 
@@ -49,10 +49,26 @@ public class ClientEventSubscriber {
     }
 
     @SubscribeEvent
-    public static void onCalculatePlayerTurn(CalculatePlayerTurnEvent event) {
+    public static void onMouseButtonPre(InputEvent.MouseButton.Pre event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.hasEffect(TAMobEffects.STUN)) {
-            event.setMouseSensitivity(0.0D);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMouseScrolling(InputEvent.MouseScrollingEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.hasEffect(TAMobEffects.STUN)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onInteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.hasEffect(TAMobEffects.STUN)) {
+            event.setCanceled(true);
         }
     }
 
@@ -77,8 +93,8 @@ public class ClientEventSubscriber {
                 RandomSource random = player.level().random;
                 float amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.TREMOR)).getAmplifier();
                 float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(Boolean.TRUE);
-                float f =  Mth.sin((player.tickCount + partialTick) * 0.5F) * ((amplifier + 1.0F) * 0.5F);
-                moveCamera(event.getCamera(), (f * random.nextFloat()), (f * random.nextFloat()), (f * random.nextFloat()));
+                float f =  Mth.sin((player.tickCount + partialTick) * 2.0F) * ((amplifier + 1.0F) * 10.0F);
+                player.turn(f * random.nextDouble(), f * random.nextDouble());
             }
         }
     }
@@ -160,13 +176,6 @@ public class ClientEventSubscriber {
         graphics.blit(atlasLocation, (guiWidth - 180) / 2, event.getY() + barYOffset, 0, 0, progress, barHeight);
         graphics.drawString(font, description, strX, event.getY() + textYOffset, textColor);
         event.setIncrement(frameHeight + 3);
-    }
-
-    private static void moveCamera(Camera camera, float zoom, float dy, float dx) {
-        double d0 = camera.getLookVector().x() * zoom + camera.getUpVector().x() * dy + camera.getLeftVector().x() * dx;
-        double d1 = camera.getLookVector().y() * zoom + camera.getUpVector().y() * dy + camera.getLeftVector().y() * dx;
-        double d2 = camera.getLookVector().z() * zoom + camera.getUpVector().z() * dy + camera.getLeftVector().z() * dx;
-        camera.setPosition(new Vec3(camera.getPosition().x + d0, camera.getPosition().y + d1, camera.getPosition().z + d2));
     }
 
 }
