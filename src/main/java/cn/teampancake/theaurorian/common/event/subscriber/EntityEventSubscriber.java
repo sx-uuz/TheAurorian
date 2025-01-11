@@ -180,7 +180,8 @@ public class EntityEventSubscriber {
             Level level = entity.level();
             if (!level.isClientSide()) {
                 int i = entity.getData(TAAttachmentTypes.TICKS_FROSTBITE);
-                if (entity.hasEffect(TAMobEffects.PARALYSIS) && entity.getVehicle() == null) {
+                boolean flag = entity.hasEffect(TAMobEffects.PARALYSIS) || entity.hasEffect(TAMobEffects.STUN);
+                if (flag && entity.getVehicle() == null) {
                     SitEntity sitEntity = new SitEntity(level);
                     sitEntity.setPos(entity.position());
                     level.addFreshEntity(sitEntity);
@@ -261,7 +262,7 @@ public class EntityEventSubscriber {
         MobEffectInstance instance = event.getEffectInstance();
         LivingEntity entity = event.getEntity();
         if (instance != null) {
-            if (instance.is(TAMobEffects.PARALYSIS)) {
+            if (instance.is(TAMobEffects.PARALYSIS) || instance.is(TAMobEffects.STUN)) {
                 BlockPos pos = entity.getOnPos();
                 if (entity.getVehicle() instanceof SitEntity sitEntity) {
                     entity.moveTo(pos.getX(), pos.above().getY(), pos.getZ());

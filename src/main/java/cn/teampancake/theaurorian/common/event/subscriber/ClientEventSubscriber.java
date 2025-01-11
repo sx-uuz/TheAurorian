@@ -75,15 +75,8 @@ public class ClientEventSubscriber {
         LocalPlayer player = minecraft.player;
         if (player != null) {
             if (player.hasEffect(TAMobEffects.CONFUSION)) {
-                int amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.CONFUSION)).getAmplifier();
-                if (amplifier == 1) {
-                    float rotation = Mth.sin(player.tickCount / 10.0F) * 45.0F;
-                    event.setRoll(rotation);
-                }
-
-                if (amplifier == 2) {
-                    event.setRoll(180.0F);
-                }
+                float rotation = Mth.sin(player.tickCount / 10.0F) * 45.0F;
+                event.setRoll(rotation);
             }
 
             if (player.hasEffect(TAMobEffects.TREMOR)) {
@@ -92,6 +85,11 @@ public class ClientEventSubscriber {
                 float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(Boolean.TRUE);
                 float f =  Mth.sin((player.tickCount + partialTick) * 2.0F) * ((amplifier + 1.0F) * 10.0F);
                 player.turn(f * random.nextDouble(), f * random.nextDouble());
+            }
+
+            if (player.hasEffect(TAMobEffects.OVERHEATING)) {
+                float amplifier = Objects.requireNonNull(player.getEffect(TAMobEffects.OVERHEATING)).getAmplifier();
+                event.setRoll(Mth.sin(player.tickCount / 5.0F) * (amplifier + 1.0F));
             }
         }
     }
