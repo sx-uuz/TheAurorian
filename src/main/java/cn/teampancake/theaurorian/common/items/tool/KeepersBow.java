@@ -65,7 +65,9 @@ public class KeepersBow extends BowItem {
                     abstractArrow.setData(TAAttachmentTypes.SHOOT_FROM_KEEPERS_BOW.get(), true);
                     abstractArrow.setCritArrow(isCrit);
                     if (i < projectileItems.size() / 3) {
-                        abstractArrow.pickup = AbstractArrow.Pickup.ALLOWED;
+                        if (shooter instanceof Player player && !player.getAbilities().instabuild) {
+                            abstractArrow.pickup = AbstractArrow.Pickup.ALLOWED;
+                        }
                     } else {
                         abstractArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                     }
