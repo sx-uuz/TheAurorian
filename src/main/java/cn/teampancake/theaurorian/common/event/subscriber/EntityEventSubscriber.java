@@ -1,6 +1,7 @@
 package cn.teampancake.theaurorian.common.event.subscriber;
 
 import cn.teampancake.theaurorian.TheAurorian;
+import cn.teampancake.theaurorian.common.components.SourceOfTerra;
 import cn.teampancake.theaurorian.common.data.datagen.tags.TABlockTags;
 import cn.teampancake.theaurorian.common.effect.CorruptionEffect;
 import cn.teampancake.theaurorian.common.effect.ForbiddenCurseEffect;
@@ -22,6 +23,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,8 +82,6 @@ import java.util.List;
 @EventBusSubscriber(modid = TheAurorian.MOD_ID)
 public class EntityEventSubscriber {
 
-    private static final DataComponentType<CustomData> CUSTOM_DATA = DataComponents.CUSTOM_DATA;
-
     @SubscribeEvent
     public static void onPlayerTicking(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && player.level() instanceof ServerLevel level) {
@@ -124,16 +124,27 @@ public class EntityEventSubscriber {
         BlockPos pos = event.getPos();
         Level level = event.getLevel();
         Player player = event.getEntity();
-        BlockState state = level.getBlockState(pos);
         ItemStack itemInHand = player.getItemInHand(event.getHand());
+        DataComponentType<SourceOfTerra> componentType = TADataComponents.SOURCE_OF_TERRA.get();
         if (itemInHand.getEnchantmentLevel(TAEnchantments.get(level, TAEnchantments.SOURCE_OF_TERRA)) > 0) {
-            CompoundTag compoundTag = itemInHand.getOrDefault(CUSTOM_DATA, CustomData.EMPTY).copyTag();
             if (HopperBlockEntity.getContainerAt(level, pos) != null && player.isShiftKeyDown()) {
-                compoundTag.put("selected_container", NbtUtils.writeBlockState(state));
-                compoundTag.putInt("selected_x", pos.getX());
-                compoundTag.putInt("selected_y", pos.getY());
-                compoundTag.putInt("selected_z", pos.getZ());
-                itemInHand.set(CUSTOM_DATA, CustomData.of(compoundTag));
+                SourceOfTerra sourceOfTerra = itemInHand.get(componentType);
+                String dimension = level.dimension().location().toString();
+                if (sourceOfTerra == null) {
+                    itemInHand.set(componentType, new SourceOfTerra(dimension, pos.getX(), pos.getY(), pos.getZ()));
+                    checkIfServerPlayerAndSendMessage(player, "message.source_of_terra.bind");
+                } else {
+                    int selectedX = sourceOfTerra.selectedX();
+                    int selectedY = sourceOfTerra.selectedY();
+                    int selectedZ = sourceOfTerra.selectedZ();
+                    if (selectedX == pos.getX() && selectedY == pos.getY() && selectedZ == pos.getZ()) {
+                        checkIfServerPlayerAndSendMessage(player, "message.source_of_terra.unbind");
+                        itemInHand.remove(componentType);
+                    } else {
+                        itemInHand.set(componentType, new SourceOfTerra(dimension, pos.getX(), pos.getY(), pos.getZ()));
+                        checkIfServerPlayerAndSendMessage(player, "message.source_of_terra.changed");
+                    }
+                }
             }
         }
     }
@@ -524,6 +535,12 @@ public class EntityEventSubscriber {
             if (state.is(selected.getBlock()) && !state.isAir()) {
                 event.setNewSpeed(event.getOriginalSpeed() * 2.0F);
             }
+        }
+    }
+
+    private static void checkIfServerPlayerAndSendMessage(Player player, String key) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.sendSystemMessage(Component.translatable(key));
         }
     }
 

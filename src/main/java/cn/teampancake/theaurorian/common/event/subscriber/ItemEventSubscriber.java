@@ -1,8 +1,10 @@
 package cn.teampancake.theaurorian.common.event.subscriber;
 
 import cn.teampancake.theaurorian.TheAurorian;
+import cn.teampancake.theaurorian.common.components.SourceOfTerra;
 import cn.teampancake.theaurorian.common.data.datagen.tags.TAItemTags;
 import cn.teampancake.theaurorian.common.items.TAArmorMaterials;
+import cn.teampancake.theaurorian.common.registry.TADataComponents;
 import cn.teampancake.theaurorian.common.registry.TAItems;
 import cn.teampancake.theaurorian.common.registry.TAParticleTypes;
 import cn.teampancake.theaurorian.common.utils.TACommonUtils;
@@ -67,8 +69,13 @@ public class ItemEventSubscriber {
     public static void onRenderItemTooltips(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         List<Component> tooltip = event.getToolTip();
+        SourceOfTerra sourceOfTerra = stack.get(TADataComponents.SOURCE_OF_TERRA.get());
         if (TACommonUtils.getItemProperties(stack.getItem()).hasTooltips) {
             tooltip.add(Component.translatable("tooltips." + stack.getItem().getDescriptionId()));
+        }
+
+        if (sourceOfTerra != null) {
+            sourceOfTerra.addToTooltip(event.getContext(), tooltip::add, event.getFlags());
         }
 
         Ingredient repairItem = null;
@@ -112,7 +119,6 @@ public class ItemEventSubscriber {
                 Vec3 vec3 = player.getDeltaMovement();
                 player.setDeltaMovement(vec3.x, jumpPower, vec3.z);
                 player.getCooldowns().addCooldown(stack.getItem(), 100);
-                player.resetFallDistance();
             }
         }
     }

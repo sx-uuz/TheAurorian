@@ -761,6 +761,10 @@
   "item.theaurorian.world_scroll_fragment": "世界残卷",
   "itemGroup.theaurorian.building": "极光幽境（建材）",
   "itemGroup.theaurorian.normal": "极光幽境",
+  "message.source_of_terra.bind": "§a您已绑定该容器！",
+  "message.source_of_terra.changed": "§e绑定的容器已被更改！",
+  "message.source_of_terra.invalid": "§c绑定的容器无效或已被破坏！",
+  "message.source_of_terra.unbind": "§b您已取消绑定该容器！",
   "messages.item.theaurorian.aurorian_steel_sword.holiness": "所有的罪恶已被驱散！",
   "messages.item.theaurorian.umbra_pickaxe.fail": "选择失败，因为剩余耐久已不足60！",
   "messages.item.theaurorian.umbra_pickaxe.selected": "已选择方块：%s",
@@ -902,5 +906,6 @@
   "tooltips.theaurorian.rune_game.done": "已完成",
   "tooltips.theaurorian.rune_game.player": "玩家：",
   "tooltips.theaurorian.rune_game.status": "符石游戏状态：",
-  "tooltips.theaurorian.rune_game.undone": "未完成"
+  "tooltips.theaurorian.rune_game.undone": "未完成",
+  "tooltips.theaurorian.source_of_terra.dimension": "容器所在的维度："
 }

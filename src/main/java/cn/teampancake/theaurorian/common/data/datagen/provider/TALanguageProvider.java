@@ -70,6 +70,7 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.undone", "Undone", "未完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.done", "Done", "已完成");
         this.add("tooltips." + TheAurorian.MOD_ID + ".rune_game.player", "Player: ", "玩家：");
+        this.add("tooltips." + TheAurorian.MOD_ID + ".source_of_terra.dimension", "The current dimension of container: ", "容器所在的维度：");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.game_over", "Game Over", "游 戏 结 束");
         this.add(TheAurorian.MOD_ID + ".rune_game_screen.current_game_info",
                 "Current Game Time: %1$s, Best Time: %2$s", "本场游戏用时：%1$s，最佳用时：%2$s");
@@ -865,6 +866,10 @@ public class TALanguageProvider extends LanguageProvider {
         this.add("messages." + TAItems.AURORIAN_STEEL_SWORD.get().getDescriptionId() + ".holiness", "All evil has been dispelled!", "所有的罪恶已被驱散！");
         this.add("messages." + TAItems.UMBRA_PICKAXE.get().getDescriptionId() + ".selected", "Selected Block: %s", "已选择方块：%s");
         this.add("messages." + TAItems.UMBRA_PICKAXE.get().getDescriptionId() + ".fail", "The remaining durability is less than 60 so select fail!", "选择失败，因为剩余耐久已不足60！");
+        this.add("message.source_of_terra.bind", "You have already bound this container!", "§a您已绑定该容器！");
+        this.add("message.source_of_terra.unbind", "You have already unbound this container!", "§b您已取消绑定该容器！");
+        this.add("message.source_of_terra.changed", "Container has been changed!", "§e绑定的容器已被更改！");
+        this.add("message.source_of_terra.invalid", "Container is invalid or has benn destroy!", "§c绑定的容器无效或已被破坏！");
 
         //MOD TOOLTIPS
         this.addTooltips(TAItems.AURORIAN_STEEL_HELMET, "The truth blessing of the aurora! The enchantment in this armors will upgrade slowly as key goes on until the max level!", "真正的极光赐福！盔甲上的附魔会随时间推移而缓慢升级，直到达到对应附魔的等级上限！");

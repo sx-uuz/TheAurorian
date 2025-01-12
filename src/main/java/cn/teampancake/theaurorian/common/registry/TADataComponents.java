@@ -2,6 +2,7 @@ package cn.teampancake.theaurorian.common.registry;
 
 import cn.teampancake.theaurorian.TheAurorian;
 import cn.teampancake.theaurorian.common.components.RuneGame;
+import cn.teampancake.theaurorian.common.components.SourceOfTerra;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -23,5 +24,7 @@ public class TADataComponents {
             () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<RuneGame>> RUNE_GAME = DATA_COMPONENT_TYPE.register("rune_game",
             () -> DataComponentType.<RuneGame>builder().persistent(RuneGame.CODEC).networkSynchronized(RuneGame.STREAM_CODEC).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SourceOfTerra>> SOURCE_OF_TERRA = DATA_COMPONENT_TYPE.register("source_of_terra",
+            () -> DataComponentType.<SourceOfTerra>builder().persistent(SourceOfTerra.CODEC).networkSynchronized(SourceOfTerra.STREAM_CODEC).build());
 
 }

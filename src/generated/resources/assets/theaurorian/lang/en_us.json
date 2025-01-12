@@ -761,6 +761,10 @@
   "item.theaurorian.world_scroll_fragment": "World Scroll Fragment",
   "itemGroup.theaurorian.building": "The Aurorian (Building Materials)",
   "itemGroup.theaurorian.normal": "The Aurorian",
+  "message.source_of_terra.bind": "You have already bound this container!",
+  "message.source_of_terra.changed": "Container has been changed!",
+  "message.source_of_terra.invalid": "Container is invalid or has benn destroy!",
+  "message.source_of_terra.unbind": "You have already unbound this container!",
   "messages.item.theaurorian.aurorian_steel_sword.holiness": "All evil has been dispelled!",
   "messages.item.theaurorian.umbra_pickaxe.fail": "The remaining durability is less than 60 so select fail!",
   "messages.item.theaurorian.umbra_pickaxe.selected": "Selected Block: %s",
@@ -902,5 +906,6 @@
   "tooltips.theaurorian.rune_game.done": "Done",
   "tooltips.theaurorian.rune_game.player": "Player: ",
   "tooltips.theaurorian.rune_game.status": "Rune Game Status: ",
-  "tooltips.theaurorian.rune_game.undone": "Undone"
+  "tooltips.theaurorian.rune_game.undone": "Undone",
+  "tooltips.theaurorian.source_of_terra.dimension": "The current dimension of container: "
 }
