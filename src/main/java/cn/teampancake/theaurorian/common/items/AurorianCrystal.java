@@ -2,9 +2,9 @@ package cn.teampancake.theaurorian.common.items;
 
 import cn.teampancake.theaurorian.common.data.datagen.tags.TAItemTags;
 import cn.teampancake.theaurorian.common.registry.TADimensions;
+import cn.teampancake.theaurorian.common.utils.TAEntityUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,33 +29,34 @@ public class AurorianCrystal extends Item {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
-        if (pLivingEntity instanceof ServerPlayer serverPlayer) {
-            MinecraftServer server = serverPlayer.getServer();
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        if (livingEntity instanceof ServerPlayer player) {
+            MinecraftServer server = player.getServer();
             if (server != null) {
-                ResourceKey<Level> dimension = serverPlayer.level().dimension();
-                ServerLevel overworld = server.getLevel(Level.OVERWORLD);
-                ServerLevel aurorian = server.getLevel(TADimensions.AURORIAN_DIMENSION);
-                if (overworld != null && dimension == TADimensions.AURORIAN_DIMENSION) {
-                    serverPlayer.teleportTo(overworld, 0, 100, 0, serverPlayer.getYRot(), serverPlayer.getXRot());
+                ResourceKey<Level> dimension = player.level().dimension();
+                ResourceKey<Level> overworldKey = Level.OVERWORLD;
+                if (dimension != overworldKey) {
+                    TAEntityUtils.teleportFromAurorianToOverworld(player, server.getLevel(overworldKey));
                 }
-                if (aurorian != null && dimension == Level.OVERWORLD) {
-                    serverPlayer.teleportTo(aurorian, 0, 100, 0, serverPlayer.getYRot(), serverPlayer.getXRot());
+
+                ResourceKey<Level> aurorianKey = TADimensions.AURORIAN_DIMENSION;
+                if (dimension != aurorianKey) {
+                    TAEntityUtils.teleportToAurorian(player, server.getLevel(aurorianKey));
                 }
             }
         }
 
-        return super.finishUsingItem(pStack, pLevel, pLivingEntity);
+        return super.finishUsingItem(stack, level, livingEntity);
     }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 20 * 2;
+        return 20;
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BOW;
+        return UseAnim.SPEAR;
     }
 
 }

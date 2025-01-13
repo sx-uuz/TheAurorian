@@ -179,6 +179,16 @@ public class EntityEventSubscriber {
     }
 
     @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        AttachmentType<Integer> type = TAAttachmentTypes.TELEPORT_TO_AURORIAN_COUNT.get();
+        if (event.getTo() == TADimensions.AURORIAN_DIMENSION) {
+            Player player = event.getEntity();
+            int count = player.getData(type);
+            player.setData(type, count + 1);
+        }
+    }
+
+    @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Cat cat && cat.temptGoal != null) {
 
@@ -311,7 +321,7 @@ public class EntityEventSubscriber {
         DamageSource source = event.getSource();
         LivingEntity entity = event.getEntity();
         boolean isHarmfulEffect = source.is(DamageTypes.INDIRECT_MAGIC) || source.is(DamageTypes.MAGIC);
-        boolean enchantmentFlag = TAEntityUtils.canTriggerEnchantmentEffect(entity, TAEnchantments.VIRTUALIZATION);
+        boolean enchantmentFlag = TAEntityUtils.canArmorTriggerEnchantmentEffect(entity, TAEnchantments.VIRTUALIZATION);
         if (isHarmfulEffect && entity.hasEffect(TAMobEffects.HOLINESS) || enchantmentFlag) {
             event.setNewDamage(0.0F);
         }
@@ -373,7 +383,7 @@ public class EntityEventSubscriber {
         }
 
         if (sourceEntity instanceof LivingEntity entity) {
-            if (TAEntityUtils.canTriggerEnchantmentEffect(target, TAEnchantments.REFLECT_AURA)) {
+            if (TAEntityUtils.canArmorTriggerEnchantmentEffect(target, TAEnchantments.REFLECT_AURA)) {
                 float amount = event.getNewDamage();
                 entity.getCombatTracker().recordDamage(source, amount);
                 entity.setHealth(entity.getHealth() - amount);
