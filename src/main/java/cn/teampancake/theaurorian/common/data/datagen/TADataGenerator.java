@@ -32,13 +32,13 @@ public class TADataGenerator {
         generator.addProvider(event.includeServer(), dataPackProvider);
         generator.addProvider(event.includeServer(), new TAPaintingVariantTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAEnchantmentTagsProvider(output, registryProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new TAStructureTagsProvider(output, registryProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new TABiomeTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAEntityTagsProvider(output, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAFluidTagsProvider(output, provider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new TABiomeTagsProvider(output, registryProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new TAPoiTagsProvider(output, provider, existingFileHelper));
         generator.addProvider(event.includeClient(), new TABlockStateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new TAItemModelProvider(output, existingFileHelper));
-        generator.addProvider(event.includeServer(), new TAPoiTagsProvider(output, provider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new TAStructureTagsProvider(output, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TASoundProvider(output, existingFileHelper));
         generator.addProvider(event.includeServer(), new TALanguageProvider(output, "en_us"));
         generator.addProvider(event.includeServer(), new TALanguageProvider(output, "zh_cn"));

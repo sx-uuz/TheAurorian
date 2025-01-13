@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "theaurorian:runestone_dungeon",
-      "required": false
-    }
+    "theaurorian:runestone_dungeon"
   ]
 }

@@ -7,6 +7,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class TAStructureTags {
 
+    public static final TagKey<Structure> RUINS_ALTAR = create("ruins_altar");
     public static final TagKey<Structure> RUNESTONE_DUNGEON = create("runestone_dungeon");
     public static final TagKey<Structure> DARKSTONE_DUNGEON = create("darkstone_dungeon");
     public static final TagKey<Structure> MOON_TEMPLE = create("moon_temple");
