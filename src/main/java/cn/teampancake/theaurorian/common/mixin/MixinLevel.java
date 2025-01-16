@@ -20,7 +20,7 @@ public abstract class MixinLevel {
     @Shadow public abstract float getThunderLevel(float delta);
     @Shadow public abstract DimensionType dimensionType();
     @Shadow public abstract long getDayTime();
-    @Shadow public int skyDarken;
+    @Shadow private int skyDarken;
 
     @Inject(method = "updateSkyBrightness", at = @At(value = "HEAD"), cancellable = true)
     public void updateSkyBrightness(CallbackInfo ci) {
@@ -33,4 +33,5 @@ public abstract class MixinLevel {
             ci.cancel();
         }
     }
+
 }

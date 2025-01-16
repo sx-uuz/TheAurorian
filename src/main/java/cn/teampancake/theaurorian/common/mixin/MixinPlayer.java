@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayer extends LivingEntity {
 
     @Shadow @Final private Abilities abilities;
-    @Shadow public FoodData foodData;
+    @Shadow protected FoodData foodData;
 
     protected MixinPlayer(EntityType<? extends LivingEntity> type, Level level) {
         super(type, level);
