@@ -128,7 +128,7 @@ public class TAEnchantments {
                 5, 5, Enchantment.constantCost(25),
                 Enchantment.constantCost(50), 4, EquipmentSlotGroup.ARMOR)));
         register(context, FREEZE_ASPECT, Enchantment.enchantment(Enchantment.definition(
-                itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                itemLookup.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
                 2, 2, Enchantment.dynamicCost(10, 20),
                 Enchantment.dynamicCost(60, 10), 4, EquipmentSlotGroup.HAND))
                 .withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER,

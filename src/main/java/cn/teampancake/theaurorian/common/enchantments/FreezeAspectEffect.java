@@ -20,7 +20,7 @@ public record FreezeAspectEffect(int placeholder) implements EnchantmentEntityEf
 
     @Override
     public void apply(ServerLevel level, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 origin) {
-        if (entity instanceof LivingEntity livingEntity && MysteriumWoolArmor.isWearFullArmor(livingEntity)) {
+        if (entity instanceof LivingEntity livingEntity && !MysteriumWoolArmor.isWearFullArmor(livingEntity)) {
             livingEntity.addEffect(new MobEffectInstance(TAMobEffects.FROSTBITE, (100 + enchantmentLevel * 20), enchantmentLevel));
         }
     }

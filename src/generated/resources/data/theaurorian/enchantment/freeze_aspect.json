@@ -33,6 +33,6 @@
   "slots": [
     "hand"
   ],
-  "supported_items": "#minecraft:enchantable/head_armor",
+  "supported_items": "#minecraft:enchantable/weapon",
   "weight": 2
 }
