@@ -14,7 +14,6 @@
         "MixinServerLevel"
     ],
     "client": [
-        "MixinClientLevel",
         "MixinClientPacketListener",
         "MixinLevelRenderer",
         "MixinMinecraft",

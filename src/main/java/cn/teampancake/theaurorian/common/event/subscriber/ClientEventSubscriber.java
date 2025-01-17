@@ -24,6 +24,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 
 import java.awt.*;
 import java.util.Objects;
@@ -66,6 +67,14 @@ public class ClientEventSubscriber {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.hasEffect(TAMobEffects.STUN)) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlaySound(PlaySoundEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.hasEffect(TAMobEffects.DEAFNESS)) {
+            event.setSound(null);
         }
     }
 
@@ -165,10 +174,10 @@ public class ClientEventSubscriber {
         GuiGraphics graphics = event.getGuiGraphics();
         int guiWidth = graphics.guiWidth();
         int fontWidth = font.width(description);
-        int strX = guiWidth / 2 - fontWidth / 2;
+        int strX = guiWidth >> 1 - fontWidth >> 1;
         int progress = (int) (180 * event.getBossEvent().getProgress());
-        graphics.blit(atlasLocation, (guiWidth - 186) / 2, event.getY() + frameYOffset, 0, 5, 186, frameHeight);
-        graphics.blit(atlasLocation, (guiWidth - 180) / 2, event.getY() + barYOffset, 0, 0, progress, barHeight);
+        graphics.blit(atlasLocation, (guiWidth - 186) >> 1, event.getY() + frameYOffset, 0, 5, 186, frameHeight);
+        graphics.blit(atlasLocation, (guiWidth - 180) >> 1, event.getY() + barYOffset, 0, 0, progress, barHeight);
         graphics.drawString(font, description, strX, event.getY() + textYOffset, textColor);
         event.setIncrement(frameHeight + 3);
     }
