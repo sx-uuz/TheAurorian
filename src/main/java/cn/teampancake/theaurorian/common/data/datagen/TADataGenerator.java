@@ -33,6 +33,7 @@ public class TADataGenerator {
         generator.addProvider(event.includeServer(), new TAPaintingVariantTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAEnchantmentTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAStructureTagsProvider(output, registryProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new TAMobEffectTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TABiomeTagsProvider(output, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAEntityTagsProvider(output, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new TAFluidTagsProvider(output, provider, existingFileHelper));
