@@ -1,9 +1,10 @@
 package cn.teampancake.theaurorian.common.effect;
 
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class WarmEffect extends TAMobEffect{
+public class WarmEffect extends MobEffect {
 
     public WarmEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xfdefab);

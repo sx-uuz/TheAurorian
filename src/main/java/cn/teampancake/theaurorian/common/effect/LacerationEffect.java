@@ -1,11 +1,12 @@
 package cn.teampancake.theaurorian.common.effect;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class LacerationEffect extends TAMobEffect {
+public class LacerationEffect extends MobEffect {
 
     public LacerationEffect() {
         super(MobEffectCategory.HARMFUL, 0x710817);

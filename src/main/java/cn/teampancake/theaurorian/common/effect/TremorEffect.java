@@ -1,6 +1,7 @@
 package cn.teampancake.theaurorian.common.effect;
 
 import cn.teampancake.theaurorian.TheAurorian;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -9,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class TremorEffect extends TAMobEffect {
+public class TremorEffect extends MobEffect {
 
     public TremorEffect() {
         super(MobEffectCategory.HARMFUL, 0x81663b);

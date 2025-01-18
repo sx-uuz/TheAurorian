@@ -4,11 +4,12 @@ import cn.teampancake.theaurorian.common.data.datagen.tags.TABiomeTags;
 import cn.teampancake.theaurorian.common.registry.TAMobEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.biome.Biome;
 
-public class NatureEffect extends TAMobEffect {
+public class NatureEffect extends MobEffect {
 
     public NatureEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x003472);

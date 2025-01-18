@@ -2,9 +2,10 @@ package cn.teampancake.theaurorian.common.effect;
 
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class ConfusionEffect extends TAMobEffect {
+public class ConfusionEffect extends MobEffect {
 
     public ConfusionEffect() {
         super(MobEffectCategory.HARMFUL, 0xEB00c4);
