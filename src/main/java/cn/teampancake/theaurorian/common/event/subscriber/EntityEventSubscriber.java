@@ -3,6 +3,7 @@ package cn.teampancake.theaurorian.common.event.subscriber;
 import cn.teampancake.theaurorian.TheAurorian;
 import cn.teampancake.theaurorian.common.components.SourceOfTerra;
 import cn.teampancake.theaurorian.common.data.datagen.tags.TABlockTags;
+import cn.teampancake.theaurorian.common.data.datagen.tags.TAMobEffectTags;
 import cn.teampancake.theaurorian.common.effect.CorruptionEffect;
 import cn.teampancake.theaurorian.common.effect.ForbiddenCurseEffect;
 import cn.teampancake.theaurorian.common.entities.boss.MoonQueen;
@@ -12,8 +13,10 @@ import cn.teampancake.theaurorian.common.entities.projectile.ThrownAxe;
 import cn.teampancake.theaurorian.common.entities.technical.SitEntity;
 import cn.teampancake.theaurorian.common.items.armor.MysteriumWoolArmor;
 import cn.teampancake.theaurorian.common.items.armor.SpectralArmor;
+import cn.teampancake.theaurorian.common.level.effect.CorruptionEffectInstance;
 import cn.teampancake.theaurorian.common.network.FrostbiteS2CPacket;
 import cn.teampancake.theaurorian.common.registry.*;
+import cn.teampancake.theaurorian.common.utils.EnchantmentUtils;
 import cn.teampancake.theaurorian.common.utils.TAEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -27,7 +30,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -41,6 +43,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Inventory;
@@ -53,7 +56,6 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
@@ -63,7 +65,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
@@ -75,8 +76,10 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 
 /** @noinspection deprecation*/
 @EventBusSubscriber(modid = TheAurorian.MOD_ID)
@@ -102,7 +105,7 @@ public class EntityEventSubscriber {
         Player player = event.getEntity();
         ExperienceOrb orb = event.getOrb();
         Holder<Enchantment> enchantment = TAEnchantments.get(player.level(), TAEnchantments.EXPERIENCE_ORE);
-        int i = EnchantmentHelper.getEnchantmentLevel(enchantment, player);
+        int i = EnchantmentUtils.getEnchantmentLevel(enchantment, player);
         if (orb.value > 0 && i > 0 && player.getRandom().nextFloat() < i * 0.08F) {
             orb.value *= 2;
         }
@@ -113,7 +116,7 @@ public class EntityEventSubscriber {
         Player player = event.getEntity();
         int amount = event.getAmount();
         Holder<Enchantment> enchantment = TAEnchantments.get(player.level(), TAEnchantments.CLEAR_MIND);
-        int i = EnchantmentHelper.getEnchantmentLevel(enchantment, player);
+        int i = EnchantmentUtils.getEnchantmentLevel(enchantment, player);
         if (amount > 0 && i > 0 && player.experienceLevel < 30) {
             event.setAmount(amount + Mth.ceil(amount * i * 0.1F));
         }
@@ -155,7 +158,7 @@ public class EntityEventSubscriber {
         ItemStack stack = event.getItemStack();
         Level level = player.level();
         Holder<Enchantment> enchantment = TAEnchantments.get(level, TAEnchantments.ROUNDABOUT_THROW);
-        int enchantmentLevel = EnchantmentHelper.getEnchantmentLevel(enchantment, player);
+        int enchantmentLevel = EnchantmentUtils.getEnchantmentLevel(enchantment, player);
         if (stack.getItem() instanceof AxeItem && enchantmentLevel > 0) {
             if (!level.isClientSide) {
                 Inventory inventory = player.getInventory();
@@ -190,8 +193,10 @@ public class EntityEventSubscriber {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Cat cat && cat.temptGoal != null) {
-
+        if (event.getEntity() instanceof Cat cat) {
+            Predicate<ItemStack> items = stack -> stack.is(TAItems.CAT_BELL);
+            TemptGoal temptGoal = new TemptGoal(cat, (1.25F), items, Boolean.FALSE);
+            cat.goalSelector.addGoal(0, temptGoal);
         }
     }
 
@@ -222,35 +227,8 @@ public class EntityEventSubscriber {
     @SubscribeEvent
     public static void onShieldBlock(LivingShieldBlockEvent event) {
         DamageSource source = event.getDamageSource();
-        if (event.getEntity() instanceof Player player && source.getEntity() instanceof SnowTundraGiantCrab) {
-            float damage = event.getBlockedDamage();
-            ItemStack useItem = player.getUseItem();
-            if (useItem.canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
-                if (!player.level().isClientSide) {
-                    player.awardStat(Stats.ITEM_USED.get(useItem.getItem()));
-                }
-
-                if (damage > 3.0F && player.level() instanceof ServerLevel serverLevel) {
-                    int i = (1 + Mth.floor(damage)) * 3;
-                    InteractionHand usedItemHand = player.getUsedItemHand();
-                    player.level().broadcastEntityEvent(player, (byte) 29);
-                    useItem.hurtAndBreak(i, serverLevel, player, item -> {
-                        player.onEquippedItemBroken(item, Player.getSlotForHand(usedItemHand));
-                        player.stopUsingItem();
-                    });
-
-                    if (useItem.isEmpty() || player.getRandom().nextInt(100) < 2) {
-                        float pitch = 0.8F + player.level().random.nextFloat() * 0.4F;
-                        EquipmentSlot slot = usedItemHand == InteractionHand.MAIN_HAND ?
-                                EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                        player.playSound(SoundEvents.SHIELD_BREAK, 0.8F, pitch);
-                        player.setItemSlot(slot, ItemStack.EMPTY);
-                        player.stopUsingItem();
-                    }
-                }
-            }
-
-            event.setCanceled(true);
+        if (source.getEntity() instanceof SnowTundraGiantCrab) {
+            event.setShieldDamage(event.shieldDamage() * 3);
         }
     }
 
@@ -267,15 +245,29 @@ public class EntityEventSubscriber {
     @SubscribeEvent
     public static void onMobEffectApplicable(MobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();
-        List<Holder<MobEffect>> effects = MoonQueen.getExclusiveEffects();
         Holder<MobEffect> effect = Objects.requireNonNull(event.getEffectInstance()).getEffect();
-        boolean flag1 = effect.is(TAMobEffects.INCANTATION) && entity.hasEffect(TAMobEffects.HOLINESS);
-        boolean flag2 = effect.is(TAMobEffects.HOLINESS) && entity.hasEffect(TAMobEffects.INCANTATION);
+        boolean flag1 = !effect.value().isBeneficial() && entity.hasEffect(TAMobEffects.HOLINESS);
+        boolean flag2 = effect.value().isBeneficial() && entity.hasEffect(TAMobEffects.INCANTATION);
         boolean flag3 = effect.is(TAMobEffects.PARALYSIS) && !(entity instanceof Player);
-        boolean flag4 = effects.contains(effect) && !(entity instanceof MoonQueen);
+        boolean flag4 = effect.is(TAMobEffectTags.MOON_QUEEN_ONLY) && !(entity instanceof MoonQueen);
         if (flag1 || flag2 || flag3 || flag4) {
             event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
+    }
+
+    @SubscribeEvent
+    public static void onMobEffectAdded(MobEffectEvent.Added event) {
+        try {
+            Class<MobEffectEvent> clazz = MobEffectEvent.class;
+            Field field = clazz.getDeclaredField("effectInstance");
+            field.setAccessible(Boolean.TRUE);
+            if (field.get(event) instanceof MobEffectInstance instance) {
+                if (instance.is(TAMobEffects.CORRUPTION)) {
+                    field.set(event, new CorruptionEffectInstance(instance));
+                }
+            }
+
+        } catch (Exception ignored) {}
     }
 
     @SubscribeEvent
@@ -330,10 +322,9 @@ public class EntityEventSubscriber {
             AttachmentType<Float> type = TAAttachmentTypes.EXHAUSTION_ACCUMULATION.get();
             player.setData(type, player.getData(type) + source.getFoodExhaustion());
             if (SpectralArmor.isWearSpectralArmor(player)) {
-                player.getActiveEffects().stream().filter(instance -> {
-                    MobEffect effect = instance.getEffect().value();
-                    return effect.getCategory() == MobEffectCategory.HARMFUL;
-                }).forEach(instance -> player.removeEffect(instance.getEffect()));
+                player.getActiveEffects().stream().map(MobEffectInstance::getEffect)
+                        .filter(effect -> effect.value().getCategory() == MobEffectCategory.HARMFUL)
+                        .forEach(player::removeEffect);
             }
         }
 
@@ -470,7 +461,7 @@ public class EntityEventSubscriber {
         event.setCanceled(sourceEntity instanceof MoonQueen);
         if ((entity instanceof AgeableMob || entity instanceof NeutralMob) && sourceEntity instanceof ServerPlayer player) {
             Holder<Enchantment> enchantment = TAEnchantments.get(entity.level(), TAEnchantments.SAVAGE);
-            int level = EnchantmentHelper.getEnchantmentLevel(enchantment, player);
+            int level = EnchantmentUtils.getEnchantmentLevel(enchantment, player);
             if (level > 0 && player.getRandom().nextFloat() <= level * 0.1F) {
                 event.getDrops().forEach(itemEntity -> entity.level().addFreshEntity(itemEntity));
             }

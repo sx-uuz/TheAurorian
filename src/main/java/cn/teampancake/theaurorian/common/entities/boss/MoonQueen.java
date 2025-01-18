@@ -146,13 +146,6 @@ public class MoonQueen extends AbstractAurorianBoss implements GeoEntity {
         return builder;
     }
 
-    public static List<Holder<MobEffect>> getExclusiveEffects() {
-        List<Holder<MobEffect>> list = new ArrayList<>();
-        BUFF_LIST.forEach(e -> list.add(e.getEffect()));
-        list.add(TAMobEffects.MOON_BEFALL);
-        return list;
-    }
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
