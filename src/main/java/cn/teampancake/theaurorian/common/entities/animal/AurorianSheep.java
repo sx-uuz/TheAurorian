@@ -4,6 +4,7 @@ import cn.teampancake.theaurorian.common.registry.TABlocks;
 import cn.teampancake.theaurorian.common.registry.TAEntityTypes;
 import cn.teampancake.theaurorian.common.registry.TAItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 public class AurorianSheep extends Sheep {
@@ -58,6 +60,11 @@ public class AurorianSheep extends Sheep {
         if (this.getAge() != 0) {
             this.resetLove();
         }
+    }
+
+    @Override
+    public ResourceKey<LootTable> getDefaultLootTable() {
+        return this.getType().getDefaultLootTable();
     }
 
     @Override
